@@ -1,0 +1,169 @@
+## ER Schema 수정사항
+
+1) 테이블명 변경
+
+USER → USERS
+
+: 예약어 사용으로 인한 오류(ORA-00904 부적합한 식별자)
+
+2) 속성 삭제 및 변경
+
+PLACE entity 내 image_Url, Business_Hour 속성 삭제
+
+: 개발 구현 고려, 가져온 실제 Json 데이터에 없는 정보여서 삭제
+
+EVENT entity period(compostie) → start_date, end_date로 속성 변경
+
+: 기간 계산을 위해 시작날짜~종료날짜로 나눠서 composite 속성으로 만듬
+
+3) 변수명 양식 통일 (합성어의 경우 _로 단어 연결)
+
+## 관계형 스키마 mapping
+
+### Step 1: Mapping of Regular Entity Types
+
+[Relation R / PK / Attributes]
+
+USERS
+
+Attributes: Users_ID (PK), User_Name, Email, Password, Phone_Number
+
+PLACE
+
+Attributes: Place_ID (PK), Place_Name, Category, City, Detail_address, Latitude, Longitude
+
+REVIEW
+
+Attributes: Review_ID (PK), Rating, Content, Created_Date
+
+DIARY
+
+Attributes: Diary_ID (PK), Content, Emotion, Created_Date
+
+COUPON
+
+Attributes: Coupon_ID (PK), Discount_Rate, Expired_Date, Coupon_Name, Maximum, Category
+
+EVENT
+
+Attributes: Event_ID (PK), Event_Name, Start_Date, End_Date, Description
+
+RESERVATION
+
+Attributes: Reservation_ID (PK), R_Date, Price
+
+### Step 2: Mapping of Weak Entity Types
+
+Relation R: PET 
+
+* PK: {Users_ID(from USERS), Pet_Name}
+
+Attributes: Pet_Name(Partial key), Age, Species, Gender, Introduction
+
+Relation R: BOOKMARK
+
+* PK: {Users_ID(from USERS), Place_ID}
+
+Attributes: Status
+
+### Step 3: Mapping of Binary 1:1 Relationship Types
+
+1:1 관계 존재하지 않음
+
+### Step 4: Mapping of Binary 1:N Relationship Types
+
+4-1) [OWNS] 관계 
+
+Relation S: PET (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in PET) is borrowed from PK: Users_ID (in USERS)
+
+4-2) [GETS] 관계
+
+Relation S: COUPON (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in COUPON) is borrowed from PK: Users_ID (in USERS)
+
+4-3) [MARKS] 관계 
+
+Relation S: BOOKMARK (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in BOOKMARK) is borrowed from PK: Users_ID (in USERS)
+
+4-4) [WRITES] 관계 
+
+Relation S: DIARY (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in DIARY) is borrowed from PK: Users_ID (in USERS)
+
+4-5) [RECORDS] 관계 
+
+Relation S: REVIEW (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in REVIEW) is borrowed from PK: Users_ID (in USERS)
+
+4-6) [HASBOOKMARKS] 관계 
+
+Relation S: BOOKMARK (N-side)
+
+Relation T: PLACE (1-side)
+
+FK: Place_ID (in BOOKMARK) is borrowed from PK: Place_ID (in PLACE)
+
+4-7) [REVIEWS_FOR] 관계 
+
+Relation S: REVIEW (N-side)
+
+Relation T: PLACE (1-side)
+
+FK: Place_ID (in REVIEW) is borrowed from PK: Place_ID (in PLACE)
+
+4-8) [RESERVED] 관계 
+
+Relation S: RESERVATION (N-side)
+
+Relation T: PLACE (1-side)
+
+FK: Place_ID (in RESERVATION) is borrowed from PK: Place_ID (in PLACE)
+
+4-9) [HAPPEN] 관계 
+
+Relation S: EVENT (N-side)
+
+Relation T: PLACE (1-side)
+
+FK: Place_ID (in EVENT) is borrowed from PK: Place_ID (in PLACE)
+
+4-10) [RESERVES] 관계 
+
+Relation S: RESERVATION (N-side)
+
+Relation T: USERS (1-side)
+
+FK: Users_ID (in RESERVATION) is borrowed from PK: Users_ID (in USERS)
+
+### Step 5: Mapping of Binary M:N Relationship Types
+
+Relation U: [CONTAINS] 관계 
+
+FKs: Place_ID, Diary_ID borrowed from PKs(Place_ID, Diary_ID) of the PLACE, DIARY
+
+PK: {Place_ID, Diary_ID}
+
+### Step 6: Mapping of Multivalued attributes
+
+multivalued attribute 존재하지 않음
+
+### Step 7: Mapping of N-ary Relationship Types
+
+n > 2인 N-ary Relationship Types이 존재하지 않음
