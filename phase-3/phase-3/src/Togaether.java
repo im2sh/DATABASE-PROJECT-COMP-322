@@ -1,6 +1,7 @@
 //Togaether.class
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ public class Togaether {
         System.out.println("---------- 투개더: 반려동물 동반장소 검색 및 추억보관 서비스 ----------");
 
         while (true) {
+            System.out.println("<회원 관리>");
             System.out.println("1. 로그인");
             System.out.println("2. 회원가입");
             System.out.println("3. 비밀번호 변경");
@@ -113,11 +115,7 @@ public class Togaether {
             rs= stmt.executeQuery(query);
 
             ResultSetMetaData rsmd =rs.getMetaData();
-            int cnt = rsmd.getColumnCount();
 
-            for(int i = 1; i <= cnt; i++){
-                System.out.println(rsmd.getColumnName(i));
-            }
             while(rs.next()){
                 userName =rs.getString(1);
             }
@@ -130,6 +128,44 @@ public class Togaether {
     }
 
     private static void query2(Connection conn, Statement stmt) {
+        System.out.println("이름을 입력해주세요:");
+        String userName =sc.next();
+        System.out.println("휴대폰 번호를 입력해주세요:");
+        String phoneNumber =sc.next();
+        System.out.println("이메일을 입력해주세요:");
+        String email =sc.next();
+        System.out.println("비밀 번호를 입력해주세요:");
+        String password =sc.next();
+        int userID = -1;
+
+        String selectQuery = "SELECT MAX(USERS_ID) FROM USERS U";
+        try {
+            rs = stmt.executeQuery(selectQuery);
+            while (rs.next()){
+                userID = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error = " + e.getMessage());
+            e.printStackTrace();
+        }
+        userID++;
+
+        if(userID >= 0){
+            String insertQuery = "INSERT INTO USERS VALUES (?,?,?,?,?)";
+            try {
+                PreparedStatement psmt = conn.prepareStatement(insertQuery);
+                psmt.setInt(1,userID);
+                psmt.setString(2,userName);
+                psmt.setString(3,phoneNumber);
+                psmt.setString(4,email);
+                psmt.setString(5,password);
+                psmt.executeQuery();
+                System.out.println("회원가입에 성공하셨습니다.\n" + userName +"님 환영합니다 !");
+            }catch (SQLException e){
+                System.err.println("SQL error = " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 
     }
 
