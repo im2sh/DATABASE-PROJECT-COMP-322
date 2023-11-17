@@ -101,9 +101,9 @@ public class Togaether {
 
     private static void login(Connection conn, Statement stmt) {
         System.out.println("EMAIL 입력해주세요.");
-        String email =sc.next();
+        String email = sc.next();
         System.out.println("비밀 번호를 입력해주세요.");
-        String password =sc.next();
+        String password = sc.next();
 
         String query = "SELECT U.USER_NAME" +
                 " FROM USERS U" +
@@ -112,15 +112,15 @@ public class Togaether {
 
         try {
             String userName = "";
-            rs= stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
 
-            ResultSetMetaData rsmd =rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
 
-            while(rs.next()){
-                userName =rs.getString(1);
+            while (rs.next()) {
+                userName = rs.getString(1);
             }
 
-            System.out.println(!userName.isEmpty() ? userName + "님 환영합니다": "Login Failed");
+            System.out.println(!userName.isEmpty() ? userName + "님 환영합니다" : "Login Failed");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -129,19 +129,19 @@ public class Togaether {
 
     private static void query2(Connection conn, Statement stmt) {
         System.out.println("이름을 입력해주세요:");
-        String userName =sc.next();
+        String userName = sc.next();
         System.out.println("휴대폰 번호를 입력해주세요:");
-        String phoneNumber =sc.next();
+        String phoneNumber = sc.next();
         System.out.println("이메일을 입력해주세요:");
-        String email =sc.next();
+        String email = sc.next();
         System.out.println("비밀 번호를 입력해주세요:");
-        String password =sc.next();
+        String password = sc.next();
         int userID = -1;
 
         String selectQuery = "SELECT MAX(USERS_ID) FROM USERS U";
         try {
             rs = stmt.executeQuery(selectQuery);
-            while (rs.next()){
+            while (rs.next()) {
                 userID = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -150,18 +150,18 @@ public class Togaether {
         }
         userID++;
 
-        if(userID >= 0){
+        if (userID >= 0) {
             String insertQuery = "INSERT INTO USERS VALUES (?,?,?,?,?)";
             try {
                 PreparedStatement psmt = conn.prepareStatement(insertQuery);
-                psmt.setInt(1,userID);
-                psmt.setString(2,userName);
-                psmt.setString(3,phoneNumber);
-                psmt.setString(4,email);
-                psmt.setString(5,password);
+                psmt.setInt(1, userID);
+                psmt.setString(2, userName);
+                psmt.setString(3, phoneNumber);
+                psmt.setString(4, email);
+                psmt.setString(5, password);
                 psmt.executeQuery();
-                System.out.println("회원가입에 성공하셨습니다.\n" + userName +"님 환영합니다 !");
-            }catch (SQLException e){
+                System.out.println("회원가입에 성공하셨습니다.\n" + userName + "님 환영합니다 !");
+            } catch (SQLException e) {
                 System.err.println("SQL error = " + e.getMessage());
                 e.printStackTrace();
             }
@@ -170,7 +170,29 @@ public class Togaether {
     }
 
     private static void query3(Connection conn, Statement stmt) {
+        System.out.println("이메일을 입력하세요:");
+        String email = sc.next();
+        System.out.println("변경 전 비밀번호를 입력하세요:");
+        String unchangedPw = sc.next();
+        System.out.println("변경하려는 비밀번호를 입력하세요:");
+        String updatePw = sc.next();
 
+        String sql = "UPDATE USERS set PASSWORD=? WHERE EMAIL=? AND PASSWORD=?";
+        try {
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1, updatePw);
+            psmt.setString(2, email);
+            psmt.setString(3, unchangedPw);
+            int canChange = psmt.executeUpdate();
+            if (canChange != 0) {
+                System.out.println("비밀번호가 변경되었습니다.");
+            }else{
+                System.out.println("비밀번호가 일치하지 않습니다.");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error = " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private static void query4(Connection conn, Statement stmt) {
