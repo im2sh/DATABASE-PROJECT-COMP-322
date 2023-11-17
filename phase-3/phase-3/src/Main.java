@@ -5,11 +5,11 @@ import java.sql.Statement;
 
 public class Main {
     public static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-    public static final String USER_ID = "test";	// id: Togaether
-    public static final String USER_PASSWD = "comp322";	// pw: comp322
+    public static final String USER_ID = "test";    // id: Togaether
+    public static final String USER_PASSWD = "comp322";    // pw: comp322
 
     public static void main(String[] args) {
-        Connection conn = null;	// Connection object
+        Connection conn = null;    // Connection object
         Statement stmt = null; // Statement object
 
         try {
@@ -37,7 +37,7 @@ public class Main {
         try {
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
-        }catch(SQLException ex2) {
+        } catch (SQLException ex2) {
             System.err.println("sql error = " + ex2.getMessage());
             System.exit(1);
         }
@@ -49,7 +49,7 @@ public class Main {
         try {
             stmt.close();
             conn.close();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
