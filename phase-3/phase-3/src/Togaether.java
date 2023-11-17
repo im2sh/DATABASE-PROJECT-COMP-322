@@ -42,7 +42,7 @@ public class Togaether {
             System.out.print("숫자 입력 (1~16 / 그 외의 문자 입력 시 종료): ");
             switch (sc.nextInt()) {
                 case 1:
-                    query1(conn, stmt);
+                    login(conn, stmt);
                     break;
                 case 2:
                     query2(conn, stmt);
@@ -97,7 +97,7 @@ public class Togaether {
         }
     }
 
-    private static void query1(Connection conn, Statement stmt) {
+    private static void login(Connection conn, Statement stmt) {
         System.out.println("EMAIL 입력해주세요.");
         String email =sc.next();
         System.out.println("비밀 번호를 입력해주세요.");
