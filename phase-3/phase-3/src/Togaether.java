@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Togaether {
@@ -41,69 +42,77 @@ public class Togaether {
 
             System.out.println("----------------------------------------------------");
 
-            System.out.print("숫자 입력 (1~16 / 그 외의 문자 입력 시 종료): ");
-            switch (sc.nextInt()) {
-                case 1:
-                    login(conn, stmt);
-                    break;
-                case 2:
-                    query2(conn, stmt);
-                    break;
-                case 3:
-                    query3(conn, stmt);
-                    break;
-                case 4:
-                    query4(conn, stmt);
-                    break;
-                case 5:
-                    query5(conn, stmt);
-                    break;
-                case 6:
-                    query6(conn, stmt);
-                    break;
-                case 7:
-                    query7(conn, stmt);
-                    break;
-                case 8:
-                    query8(conn, stmt);
-                    break;
-                case 9:
-                    query9(conn, stmt);
-                    break;
-                case 10:
-                    query10(conn, stmt);
-                    break;
-                case 11:
-                    query11(conn, stmt);
-                    break;
-                case 12:
-                    query12(conn, stmt);
-                    break;
-                case 13:
-                    query13(conn, stmt);
-                    break;
-                case 14:
-                    query14(conn, stmt);
-                    break;
-                case 15:
-                    query15(conn, stmt);
-                    break;
-                case 16:
-                    query16(conn, stmt);
-                    break;
-                default:
-                    System.out.println("service is terminated");
-                    System.exit(0);
-                    break;
+            try {
+                System.out.print("숫자 입력 (1~16 / 그 외의 문자 입력 시 종료): ");
+                int userChoice = sc.nextInt();
+                switch (userChoice) {
+                    case 1:
+                        login(conn, stmt);
+                        break;
+                    case 2:
+                        query2(conn, stmt);
+                        break;
+                    case 3:
+                        query3(conn, stmt);
+                        break;
+                    case 4:
+                        query4(conn, stmt);
+                        break;
+                    case 5:
+                        query5(conn, stmt);
+                        break;
+                    case 6:
+                        query6(conn, stmt);
+                        break;
+                    case 7:
+                        query7(conn, stmt);
+                        break;
+                    case 8:
+                        query8(conn, stmt);
+                        break;
+                    case 9:
+                        query9(conn, stmt);
+                        break;
+                    case 10:
+                        query10(conn, stmt);
+                        break;
+                    case 11:
+                        query11(conn, stmt);
+                        break;
+                    case 12:
+                        query12(conn, stmt);
+                        break;
+                    case 13:
+                        query13(conn, stmt);
+                        break;
+                    case 14:
+                        query14(conn, stmt);
+                        break;
+                    case 15:
+                        query15(conn, stmt);
+                        break;
+                    case 16:
+                        query16(conn, stmt);
+                        break;
+                    default:
+                        System.out.println("service is terminated");
+                        System.exit(0);
+                        break;
+                }
+            } catch (InputMismatchException e){
+                System.out.println("숫자를 입력하세요.");
+                sc.next();
             }
         }
     }
 
     private static void login(Connection conn, Statement stmt) {
-        System.out.println("EMAIL 입력해주세요.");
+        System.out.print("EMAIL 입력해주세요.");
         String email = sc.next();
-        System.out.println("비밀 번호를 입력해주세요.");
+        System.out.print("비밀 번호를 입력해주세요.");
         String password = sc.next();
+        System.out.println();
+
 
         String query = "SELECT U.USER_NAME" +
                 " FROM USERS U" +
@@ -128,15 +137,18 @@ public class Togaether {
     }
 
     private static void query2(Connection conn, Statement stmt) {
-        System.out.println("이름을 입력해주세요:");
+        System.out.print("이름을 입력해주세요:");
         String userName = sc.next();
-        System.out.println("휴대폰 번호를 입력해주세요:");
+        System.out.print("휴대폰 번호를 입력해주세요:");
         String phoneNumber = sc.next();
-        System.out.println("이메일을 입력해주세요:");
+        System.out.print("이메일을 입력해주세요:");
         String email = sc.next();
-        System.out.println("비밀 번호를 입력해주세요:");
+        System.out.print("비밀 번호를 입력해주세요:");
         String password = sc.next();
+        System.out.println();
+
         int userID = -1;
+
 
         String selectQuery = "SELECT MAX(USERS_ID) FROM USERS U";
         try {
@@ -170,12 +182,13 @@ public class Togaether {
     }
 
     private static void query3(Connection conn, Statement stmt) {
-        System.out.println("이메일을 입력하세요:");
+        System.out.print("이메일을 입력하세요:");
         String email = sc.next();
-        System.out.println("변경 전 비밀번호를 입력하세요:");
+        System.out.print("변경 전 비밀번호를 입력하세요:");
         String unchangedPw = sc.next();
-        System.out.println("변경하려는 비밀번호를 입력하세요:");
+        System.out.print("변경하려는 비밀번호를 입력하세요:");
         String updatePw = sc.next();
+        System.out.println();
 
         String sql = "UPDATE USERS set PASSWORD=? WHERE EMAIL=? AND PASSWORD=?";
         try {
@@ -186,7 +199,7 @@ public class Togaether {
             int canChange = psmt.executeUpdate();
             if (canChange != 0) {
                 System.out.println("비밀번호가 변경되었습니다.");
-            }else{
+            } else {
                 System.out.println("비밀번호가 일치하지 않습니다.");
             }
         } catch (SQLException e) {
@@ -199,37 +212,18 @@ public class Togaether {
         System.out.print("원하는 지역 입력 (예: 대구광역시): ");
         bufferClear();
         String location = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT * FROM PLACE P " +
                 "WHERE P.CITY LIKE '%" + location + "%' " +
                 "AND P.CATEGORY = 'DINING'";
-
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            while (rs.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     public static void query5(Connection conn, Statement stmt) {
         System.out.print("최소 평점 (예: 4): ");
         int minRating = sc.nextInt();
+        System.out.println();
 
         String query = "SELECT P.CITY, COUNT(*) AS TOTAL_CATEGORY " +
                 "FROM PLACE P " +
@@ -237,38 +231,13 @@ public class Togaether {
                 "WHERE R.RATING >= " + minRating +
                 "GROUP BY P.CITY";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println(minRating + "점을 넘는 가게가 존재하지 않음");
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query6(Connection conn, Statement stmt) {
         System.out.print("평점 (예: 5): ");
         int rating = sc.nextInt();
+        System.out.println();
 
         String query = "SELECT P.PLACE_NAME, P.CATEGORY, P.CITY, P.DETAIL_ADDRESS " +
                 "FROM PLACE P " +
@@ -279,76 +248,25 @@ public class Togaether {
                 ") " +
                 "ORDER BY P.CATEGORY ASC";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println(rating + "점 평점을 받은 가게가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query7(Connection conn, Statement stmt) {
         System.out.print("조회할 장소의 카테고리 (예: CAFE, DINING, ...): ");
         bufferClear();
         String category = sc.nextLine();
+        System.out.println();
+
         String query = "SELECT * FROM PLACE P WHERE P.CATEGORY = '" + category + "' ORDER BY P.CATEGORY ASC";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("카테고리 '" + category + "'에 해당하는 장소가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query8(Connection conn, Statement stmt) {
         System.out.print("조회할 카테고리 (예: CAFE, DINING, ...): ");
         bufferClear();
         String category = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT P.PLACE_NAME, COUNT(*) AS RANKING " +
                 "FROM PLACE P " +
@@ -357,40 +275,14 @@ public class Togaether {
                 "GROUP BY P.PLACE_NAME " +
                 "ORDER BY RANKING DESC";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("카테고리 '" + category + "'에 해당하는 즐겨찾기 순위가 높은 장소가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query9(Connection conn, Statement stmt) {
         System.out.print("제외할 카테고리 (예: BAR, ...): ");
         bufferClear();
         String excludedCategory = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT Review_ID, Rating, Content, Created_Date " +
                 "FROM Review " +
@@ -401,196 +293,66 @@ public class Togaether {
                 "    WHERE P.Category = '" + excludedCategory + "'" +
                 ")";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("카테고리 '" + excludedCategory + "'를 제외한 리뷰가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query10(Connection conn, Statement stmt) {
         System.out.print("이름에 포함할 글자 (예: 김, 이, 박, 최, ...): ");
         bufferClear();
         String includedChar = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT * FROM DIARY D " +
                 "WHERE D.USERS_ID IN (SELECT U.USERS_ID " +
                 "FROM USERS U " +
                 "WHERE U.USER_NAME LIKE '%" + includedChar + "%')";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("'" + includedChar + "' 글자를 포함한 이름을 가진 사용자의 일기가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query11(Connection conn, Statement stmt) {
         System.out.print("도메인 (예: @example.com): ");
         bufferClear();
         String domain = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT Users_ID, Email FROM USERS WHERE Email LIKE '%" + domain + "'" +
                 " UNION " +
                 "SELECT U.Users_ID, U.Email FROM USERS U, BOOKMARK B WHERE U.Users_ID = B.Users_ID";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("'" + domain + "' 도메인을 가진 사용자와 북마크로 장소를 등록한 사용자가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query12(Connection conn, Statement stmt) {
         System.out.print("동물 종류 (예: 강아지): ");
         bufferClear();
         String petType = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT U.USER_NAME, U.PHONE_NUMBER " +
                 "FROM USERS U " +
                 "WHERE U.USERS_ID IN (SELECT P.USERS_ID FROM PET P WHERE P.SPECIES = '" + petType + "')";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResults = false;
-            while (rs.next()) {
-                hasResults = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResults) {
-                System.out.println("'" + petType + "'를 키우는 사용자가 존재하지 않음");
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query13(Connection conn, Statement stmt) {
         Scanner sc = new Scanner(System.in);
         System.out.print("열리는 이벤트가 뭔지 궁금한 지역 (예: 대구광역시): ");
         String location = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT E.EVENT_NAME, P.PLACE_NAME, E.START_DATE, E.END_DATE, E.DESCRIPTION " +
                 "FROM PLACE P, EVENT E " +
                 "WHERE P.PLACE_ID = E.PLACE_ID AND P.CITY LIKE '%" + location + "%'";
 
-        try {
-            ResultSet rs = stmt.executeQuery(query);
-
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnCount = rsmd.getColumnCount();
-
-            for (int i = 1; i <= columnCount; i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
-            }
-            System.out.println();
-
-            boolean hasResult = false;
-
-            while (rs.next()) {
-                hasResult = true;
-                for (int i = 1; i <= columnCount; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-
-            if (!hasResult) {
-                System.out.println(location + " 지역에서 열리는 이벤트가 존재하지 않음");
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL error = " + e.getMessage());
-            e.printStackTrace();
-        }
+        executeAndPrintQuery(query, stmt);
     }
 
     private static void query14(Connection conn, Statement stmt) {
         System.out.print("연도 입력 (예: 2023): ");
         int year = sc.nextInt();
+        System.out.println();
 
         String query =
                 "SELECT R.CONTENT, P.PLACE_NAME, U.USER_NAME, TO_CHAR(R.CREATED_DATE, 'YYYY-MM-DD') AS CREATED_DATE " +
@@ -605,6 +367,7 @@ public class Togaether {
     private static void query15(Connection conn, Statement stmt) {
         System.out.print("사용자 아이디 입력 (1~500): ");
         int userId = sc.nextInt();
+        System.out.println();
 
         String query = "SELECT U.USER_NAME, U.EMAIL FROM USERS U " +
                 "WHERE U.USERS_ID = " + userId;
@@ -616,6 +379,7 @@ public class Togaether {
         System.out.print("원하는 지역 입력 (예: 부산): ");
         bufferClear();
         String location = sc.nextLine();
+        System.out.println();
 
         String query = "SELECT U.User_Name, P.City, E.Event_Name, COUNT(R.Reservation_ID) AS Total_Reservations " +
                 "FROM USERS U " +
@@ -629,7 +393,6 @@ public class Togaether {
         executeAndPrintQuery(query, stmt);
     }
 
-    //쿼리 실행문 반복되는 거 많은거 같아서 합쳤는데 각 함수별로 에러 문구 다르게 하는 것도 고민중
     private static void executeAndPrintQuery(String query, Statement stmt) {
         try {
             ResultSet rs = stmt.executeQuery(query);
@@ -654,6 +417,7 @@ public class Togaether {
             if (!hasResults) {
                 System.out.println("결과가 존재하지 않습니다.");
             }
+            System.out.println();
         } catch (SQLException e) {
             System.err.println("SQL error = " + e.getMessage());
             e.printStackTrace();
