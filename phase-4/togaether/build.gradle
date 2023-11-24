@@ -23,7 +23,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation group: 'com.oracle.database.jdbc', name: 'ojdbc11', version: '23.2.0.0'
 
-    implementation 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor group: 'org.projectlombok', name : 'lombok', version: '1.18.28'
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
