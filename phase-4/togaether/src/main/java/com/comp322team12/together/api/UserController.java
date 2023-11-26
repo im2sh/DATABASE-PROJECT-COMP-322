@@ -49,11 +49,11 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, user);
 
-            return ResponseEntity.ok().body(new UserLoginResponse(user.getUserName()));
+            return ResponseEntity.ok().body(new UserLoginResponse(user.getUserId(), user.getUserName()));
         } catch (NotEmailException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse("이메일이 존재하지 않습니다."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse(null, "이메일이 존재하지 않습니다."));
         } catch (NotPasswordException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse("비밀번호가 틀렸습니다."));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse(null, "비밀번호가 틀렸습니다."));
         }
     }
 
@@ -65,5 +65,4 @@ public class UserController {
         }
         return ResponseEntity.ok().body(new ResponseDto("로그아웃 되었습니다."));
     }
-
 }

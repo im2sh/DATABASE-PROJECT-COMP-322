@@ -1,4 +1,4 @@
 package com.comp322team12.together.dto.response.user;
 
-public record UserLoginResponse (String userName){
+public record UserLoginResponse (Long UserId, String userName){
 }
