@@ -27,9 +27,9 @@ const SignupPage = () => {
     setError("");
 
     try {
-      const response = await axios.post("/api/signup", { email, password });
-      localStorage.setItem("token", response.data.token);
+      await axios.post("/api/signup", { email, name, password });
       setLoading(false);
+      navigate("/login");
     } catch (err) {
       setLoading(false);
       setError(
