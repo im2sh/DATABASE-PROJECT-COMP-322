@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import LoginForm from "../../components/LoginForm";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -26,13 +27,11 @@ const LoginPage = () => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      if (err.response) {
-        setError(err.response.data.message);
-      } else if (err.request) {
-        setError("No response from server");
-      } else {
-        setError("Error: " + err.message);
-      }
+      setError(
+        err.response?.data.message ||
+          err.message ||
+          "An unexpected error occurred"
+      );
     }
   };
 
@@ -42,30 +41,18 @@ const LoginPage = () => {
         <BackIcon size="2rem" />
       </BackButton>
       <Title>Login</Title>
-      <Form onSubmit={handleLogin}>
-        <InputContainer>
-          <label htmlFor="email">Email</label>
-          <Input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="password">Your Password</label>
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </InputContainer>
-        <LoginButton type="submit">로그인</LoginButton>
-      </Form>
-      <SignUpLink href="/signup">계정이 없으신가요? 회원가입</SignUpLink>
+      <LoginForm
+        onLogin={handleLogin}
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        loading={loading}
+      />
+      <SignUpWrapper>
+        계정이 없으신가요?
+        <SignUpLink href="/signup"> 회원가입</SignUpLink>
+      </SignUpWrapper>
       {error && <p>{error}</p>}
     </PageContainer>
   );
@@ -94,42 +81,22 @@ const BackIcon = styled(MdKeyboardArrowLeft)`
 `;
 
 const Title = styled.h1`
-  color: #e76f51;
+  color: #ff875a;
   margin-bottom: 40px;
   align-self: flex-start;
 `;
 
-const Form = styled.form`
-  width: 100%;
-`;
-
-const InputContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border: 2px solid #e76f51;
-  border-radius: 20px;
-  padding: 10px 0;
-  margin-top: 8px;
-`;
-
-const LoginButton = styled.button`
-  width: 100%;
-  background-color: #e76f51;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 15px;
-  font-size: 18px;
-  margin-bottom: 20px;
+const SignUpWrapper = styled.div`
+  display: flex;
+  color: #73160a;
+  gap: 10px;
 `;
 
 const SignUpLink = styled.a`
-  color: #e76f51;
-  text-decoration: none;
-  margin-top: 20px;
+  color: #73160a;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export default LoginPage;
