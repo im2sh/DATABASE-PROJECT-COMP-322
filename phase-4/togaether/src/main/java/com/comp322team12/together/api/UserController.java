@@ -57,4 +57,13 @@ public class UserController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto> logoutUser(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            session.invalidate();
+        }
+        return ResponseEntity.ok().body(new ResponseDto("로그아웃 되었습니다."));
+    }
+
 }
