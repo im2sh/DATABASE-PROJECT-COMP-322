@@ -1,6 +1,6 @@
 package com.comp322team12.together.domain.pet;
 
-import com.comp322team12.together.domain.User;
+import com.comp322team12.together.domain.User.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
