@@ -1,5 +1,8 @@
-package com.comp322team12.together.domain;
+package com.comp322team12.together.domain.User;
 
+import com.comp322team12.together.domain.Coupon;
+import com.comp322team12.together.domain.Reservation;
+import com.comp322team12.together.domain.Review;
 import com.comp322team12.together.domain.pet.Pet;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,5 +59,13 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

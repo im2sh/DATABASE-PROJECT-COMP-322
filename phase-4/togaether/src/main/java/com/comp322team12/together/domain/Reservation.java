@@ -1,5 +1,6 @@
 package com.comp322team12.together.domain;
 
+import com.comp322team12.together.domain.User.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
