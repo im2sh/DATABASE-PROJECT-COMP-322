@@ -16,6 +16,10 @@ const LoginPage = () => {
     navigate(-1); // 뒤로가기
   };
 
+  const handleGoToSignup = () => {
+    navigate("/signup");
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -49,10 +53,18 @@ const LoginPage = () => {
         setPassword={setPassword}
         loading={loading}
       />
-      <SignUpWrapper>
-        계정이 없으신가요?
-        <SignUpLink href="/signup"> 회원가입</SignUpLink>
-      </SignUpWrapper>
+      <LinkWrapper>
+        <SignUpWrapper>
+          계정이 없으신가요?
+          <SignUpLink onClick={handleGoToSignup}> 회원가입</SignUpLink>
+        </SignUpWrapper>
+        <b>|</b>
+        <ChangePasswordWrapper>
+          <ChangePasswordLink onClick={handleGoToSignup}>
+            비밀번호 변경
+          </ChangePasswordLink>
+        </ChangePasswordWrapper>
+      </LinkWrapper>
       {error && <p>{error}</p>}
     </PageContainer>
   );
@@ -97,6 +109,27 @@ const SignUpLink = styled.a`
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer;
+`;
+
+const ChangePasswordWrapper = styled.div`
+  display: flex;
+  color: #73160a;
+  gap: 10px;
+`;
+
+const ChangePasswordLink = styled.a`
+  color: #73160a;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+const LinkWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 10px;
+  color: #73160a;
 `;
 
 export default LoginPage;

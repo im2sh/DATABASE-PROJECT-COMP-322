@@ -60,6 +60,7 @@ const LoginButton = styled.button`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
 
 const InputWithIcon = styled.div`
