@@ -1,5 +1,8 @@
-package com.comp322team12.together.domain;
+package com.comp322team12.together.domain.User;
 
+import com.comp322team12.together.domain.Coupon;
+import com.comp322team12.together.domain.Reservation;
+import com.comp322team12.together.domain.Review;
 import com.comp322team12.together.domain.pet.Pet;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -8,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+    @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
     @Column(name = "USERS_ID")
     private Long userId;
 
@@ -53,6 +58,22 @@ public class User {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void pwUpdate(String password) {
         this.password = password;
     }
 }
