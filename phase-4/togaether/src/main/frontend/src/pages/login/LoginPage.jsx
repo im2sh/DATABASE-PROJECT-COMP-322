@@ -24,10 +24,12 @@ const LoginPage = () => {
     navigate("/changePassword");
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
+    // api 연결이 아직 안 되었기 때문에 일단 이렇게 home 넘어가도록
+    navigate("/home");
 
     try {
       const response = await axios.post("/api/login", { email, password });
