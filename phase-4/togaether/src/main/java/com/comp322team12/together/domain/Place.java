@@ -2,6 +2,7 @@ package com.comp322team12.together.domain;
 
 import com.comp322team12.together.domain.constants.Category;
 import com.comp322team12.together.domain.contains.Contains;
+import com.comp322team12.together.dto.response.place.PlaceResponse;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,5 +59,9 @@ public class Place {
         this.detailAddress = detailAddress;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public PlaceResponse toResponse(){
+        return new PlaceResponse(placeName, category.getType(), city, detailAddress, latitude, longitude);
     }
 }

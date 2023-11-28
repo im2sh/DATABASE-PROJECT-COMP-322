@@ -1,8 +1,8 @@
 package com.comp322team12.together.service.user;
 
 import com.comp322team12.together.domain.User.User;
-import com.comp322team12.together.dto.request.UserPwModificationRequest;
-import com.comp322team12.together.dto.request.UserSignupRequest;
+import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
+import com.comp322team12.together.dto.request.user.UserSignupRequest;
 import com.comp322team12.together.exception.DuplicateEmailException;
 import com.comp322team12.together.exception.IncorrectPassword;
 import com.comp322team12.together.exception.NotEmailException;
