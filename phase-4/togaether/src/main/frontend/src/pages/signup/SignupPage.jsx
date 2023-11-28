@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import SignupForm from "../../components/SignupForm";
+import BackButton from "../../components/BackButton";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -13,10 +13,6 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [showError, setShowError] = useState(false);
-
-  const handleBack = () => {
-    navigate(-1); // 뒤로가기
-  };
 
   const handleGoToLogin = () => {
     navigate("/login");
@@ -53,9 +49,7 @@ const SignupPage = () => {
 
   return (
     <PageContainer>
-      <BackButton onClick={handleBack}>
-        <BackIcon size="2rem" />
-      </BackButton>
+      <BackButton />
       <Title>Register</Title>
       <SignupForm
         email={email}
@@ -82,20 +76,6 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
-`;
-
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 0;
-  align-self: flex-start;
-  margin-bottom: 20px;
-`;
-
-const BackIcon = styled(MdKeyboardArrowLeft)`
-  cursor: pointer;
 `;
 
 const Title = styled.h1`
