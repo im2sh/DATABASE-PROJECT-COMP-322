@@ -3,6 +3,7 @@ package com.comp322team12.together.service;
 import com.comp322team12.together.domain.Place;
 import com.comp322team12.together.domain.constants.Category;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
+import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.repository.PlaceRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +26,17 @@ public class PlaceService {
         return placeResponses;
     }
 
-    public List<PlaceResponse> findPlaceByCategory(String category){
-        Category getCategory = Category.valueOf(category);
-        List<Place> allPlace = placeRepository.findByCategory(getCategory);
-        List<PlaceResponse> placeResponses = new ArrayList<>();
-        for (Place place : allPlace) {
-            placeResponses.add(place.toResponse());
+    public List<PlaceResponse> findPlaceByCategory(String category) {
+        try {
+            Category getCategory = Category.valueOf(category.toUpperCase());
+            List<Place> allPlace = placeRepository.findByCategory(getCategory);
+            List<PlaceResponse> placeResponses = new ArrayList<>();
+            for (Place place : allPlace) {
+                placeResponses.add(place.toResponse());
+            }
+            return placeResponses;
+        } catch (IllegalArgumentException e) {
+            throw new InvalidCategoryException("존재하지 않는 카테고리입니다.");
         }
-        return placeResponses;
     }
 }
