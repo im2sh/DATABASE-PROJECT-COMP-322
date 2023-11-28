@@ -5,8 +5,6 @@ import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ChangePasswordPage from "./pages/changePassword/ChangePasswordPage";
 
-
-
 const App = () => {
   return (
     <>
