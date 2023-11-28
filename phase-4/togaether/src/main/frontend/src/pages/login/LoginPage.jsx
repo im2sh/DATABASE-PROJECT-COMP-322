@@ -20,6 +20,10 @@ const LoginPage = () => {
     navigate("/signup");
   };
 
+  const handleGoToChangePassword = () => {
+    navigate("/changePassword");
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -60,7 +64,7 @@ const LoginPage = () => {
         </SignUpWrapper>
         <b>|</b>
         <ChangePasswordWrapper>
-          <ChangePasswordLink onClick={handleGoToSignup}>
+          <ChangePasswordLink onClick={handleGoToChangePassword}>
             비밀번호 변경
           </ChangePasswordLink>
         </ChangePasswordWrapper>
