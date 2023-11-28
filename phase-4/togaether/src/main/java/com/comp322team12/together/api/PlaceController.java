@@ -1,11 +1,10 @@
 package com.comp322team12.together.api;
 
-import com.comp322team12.together.dto.response.common.ResponseDto;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
+import com.comp322team12.together.exception.place.InvalidCityException;
 import com.comp322team12.together.service.PlaceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,18 +19,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/api/place")
+@RequestMapping(value = "/api/place", produces = "application/json; charset=UTF-8")
 public class PlaceController {
 
     private final PlaceService placeService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<PlaceResponse>> findAllPlace(){
+    public ResponseEntity<List<PlaceResponse>> findAllPlace() {
         return ResponseEntity.ok().body(placeService.findAllPlace());
     }
 
-    @GetMapping("/{category}")
-    public ResponseEntity<?> findPlaceByCategory(@PathVariable String category){
+    @GetMapping("city/{city}")
+    public ResponseEntity<?> findPlacesByCity(@PathVariable String city) {
+        try {
+            List<PlaceResponse> places = placeService.findPlaceByCity(city);
+            return ResponseEntity.ok().body(places);
+        } catch (InvalidCityException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("category/{category}")
+    public ResponseEntity<?> findPlaceByCategory(@PathVariable String category) {
         try {
             List<PlaceResponse> places = placeService.findPlaceByCategory(category);
             return ResponseEntity.ok().body(places);
