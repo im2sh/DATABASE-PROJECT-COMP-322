@@ -1,12 +1,12 @@
 package com.comp322team12.together.service.user;
 
 import com.comp322team12.together.domain.User.User;
-import com.comp322team12.together.dto.request.UserPwModificationRequest;
-import com.comp322team12.together.dto.request.UserSignupRequest;
-import com.comp322team12.together.exception.DuplicateEmailException;
-import com.comp322team12.together.exception.IncorrectPassword;
-import com.comp322team12.together.exception.NotEmailException;
-import com.comp322team12.together.exception.NotPasswordException;
+import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
+import com.comp322team12.together.dto.request.user.UserSignupRequest;
+import com.comp322team12.together.exception.user.DuplicateEmailException;
+import com.comp322team12.together.exception.user.IncorrectPassword;
+import com.comp322team12.together.exception.user.NotEmailException;
+import com.comp322team12.together.exception.user.NotPasswordException;
 import com.comp322team12.together.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

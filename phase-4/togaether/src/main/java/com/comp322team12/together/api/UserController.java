@@ -2,15 +2,14 @@ package com.comp322team12.together.api;
 
 import com.comp322team12.together.domain.User.SessionConst;
 import com.comp322team12.together.domain.User.User;
-import com.comp322team12.together.dto.request.UserLoginRequest;
-import com.comp322team12.together.dto.request.UserPwModificationRequest;
-import com.comp322team12.together.dto.request.UserSignupRequest;
-import com.comp322team12.together.dto.response.ResponseDto;
-import com.comp322team12.together.dto.response.user.UserLoginResponse;
-import com.comp322team12.together.exception.DuplicateEmailException;
-import com.comp322team12.together.exception.IncorrectPassword;
-import com.comp322team12.together.exception.NotEmailException;
-import com.comp322team12.together.exception.NotPasswordException;
+import com.comp322team12.together.dto.request.user.UserLoginRequest;
+import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
+import com.comp322team12.together.dto.request.user.UserSignupRequest;
+import com.comp322team12.together.dto.response.common.ResponseDto;
+import com.comp322team12.together.exception.user.DuplicateEmailException;
+import com.comp322team12.together.exception.user.IncorrectPassword;
+import com.comp322team12.together.exception.user.NotEmailException;
+import com.comp322team12.together.exception.user.NotPasswordException;
 import com.comp322team12.together.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -63,20 +62,20 @@ public class UserController {
             description = "로그인에 성공하였습니다."
     )
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody @Validated UserLoginRequest userLoginRequest,
+    public ResponseEntity<ResponseDto> login(@RequestBody @Validated UserLoginRequest userLoginRequest,
                                                    HttpServletRequest request) {
         try {
             String email = userLoginRequest.email();
             String password = userLoginRequest.password();
             User user = userService.authenticate(email, password);
             HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_MEMBER, user);
+            session.setAttribute(SessionConst.LOGIN_MEMBER, user.getUserId());
 
-            return ResponseEntity.ok().body(new UserLoginResponse(user.getUserId(), user.getUserName()));
+            return ResponseEntity.ok().body(new ResponseDto("로그인에 성공하였습니다."));
         } catch (NotEmailException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse(null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         } catch (NotPasswordException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse(null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         }
     }
 
