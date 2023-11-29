@@ -30,7 +30,6 @@ const AppBar = ({ onCheck }) => {
       justify="space-between"
       wrap="wrap"
       padding="0.625rem 1.5rem 0.625rem 1.9375rem"
-      bg="gray.100"
       color="black"
       w="100%"
       h="3rem"
