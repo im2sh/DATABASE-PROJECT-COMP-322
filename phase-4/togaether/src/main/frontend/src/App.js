@@ -4,6 +4,8 @@ import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ChangePasswordPage from "./pages/changePassword/ChangePasswordPage";
+import WriteDiaryPage from './pages/writediary/WriteDiaryPage';
+
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
             path="/changePassword"
             element={<ChangePasswordPage />}
           ></Route>
+          <Route path="/writeDiary" 
+          element={<WriteDiaryPage />} />
         </Routes>
       </Router>
     </>
