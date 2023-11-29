@@ -5,6 +5,8 @@ import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
 import com.comp322team12.together.exception.place.InvalidRatingException;
 import com.comp322team12.together.service.PlaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +27,27 @@ public class PlaceController {
 
     private final PlaceService placeService;
 
+    @Operation(
+            summary = "모든 장소 조회",
+            description = "모든 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "모든 장소 조회에 성공하였습니다."
+    )
     @GetMapping("/all")
     public ResponseEntity<List<PlaceResponse>> findAllPlace() {
         return ResponseEntity.ok().body(placeService.findAllPlace());
     }
 
+    @Operation(
+            summary = "도시별 장소 조회",
+            description = "도시별 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "도시별 장소 조회에 성공하였습니다."
+    )
     @GetMapping("city/{city}")
     public ResponseEntity<?> findPlacesByCity(@PathVariable String city) {
         try {
@@ -40,6 +58,14 @@ public class PlaceController {
         }
     }
 
+    @Operation(
+            summary = "카테고리별 장소 조회",
+            description = "카테고리별 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "카테고리별 장소 조회에 성공하였습니다."
+    )
     @GetMapping("category/{category}")
     public ResponseEntity<?> findPlaceByCategory(@PathVariable String category) {
         try {
@@ -50,6 +76,14 @@ public class PlaceController {
         }
     }
 
+    @Operation(
+            summary = "평점별 장소 조회",
+            description = "평점별 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "평점별 장소 조회에 성공하였습니다."
+    )
     @GetMapping("rating/{minRating}/{maxRating}")
     public ResponseEntity<?> findPlaceByRating(@PathVariable String minRating, @PathVariable String maxRating) {
         try {
