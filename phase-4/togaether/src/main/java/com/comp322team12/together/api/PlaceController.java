@@ -1,9 +1,11 @@
 package com.comp322team12.together.api;
 
+import com.comp322team12.together.dto.request.place.BookMarkRequest;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
 import com.comp322team12.together.exception.place.InvalidRatingException;
+import com.comp322team12.together.exception.place.InvalidBookmarkException;
 import com.comp322team12.together.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,6 +93,43 @@ public class PlaceController {
             List<PlaceResponse> placesByRatingRange = placeService.findPlacesByRatingRange(minRating, maxRating);
             return ResponseEntity.ok().body(placesByRatingRange);
         } catch (InvalidRatingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "북마크한 장소 조회",
+            description = "북마크한 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "북마크한 장소 조회에 성공하였습니다."
+    )
+    @GetMapping("/bookmark/{userId}")
+    public ResponseEntity<?> findBookmarkByUserId(@PathVariable Long userId) {
+        try {
+            List<PlaceResponse> placeResponse = placeService.findBookmarkByUserId(userId);
+            return ResponseEntity.ok().body(placeResponse);
+        } catch (InvalidBookmarkException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "북마크 추가/삭제",
+            description = "북마크를 추가/삭제합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "북마크 추가/삭제에 성공하였습니다."
+    )
+    @PostMapping("/bookmark/{userId}/{placeId}")
+    public ResponseEntity<?> addBookmark(@PathVariable Long userId, @PathVariable Long placeId) {
+        try {
+            BookMarkRequest bookMarkRequest = new BookMarkRequest(userId, placeId);
+            placeService.choiceBookmark(bookMarkRequest);
+            return ResponseEntity.ok().body("북마크가 변경되었습니다.");
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

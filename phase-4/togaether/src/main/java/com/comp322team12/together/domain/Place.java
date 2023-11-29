@@ -1,5 +1,6 @@
 package com.comp322team12.together.domain;
 
+import com.comp322team12.together.domain.bookmark.Bookmark;
 import com.comp322team12.together.domain.constants.Category;
 import com.comp322team12.together.domain.contains.Contains;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
@@ -50,6 +51,9 @@ public class Place {
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Contains> contains = new ArrayList<>();
+
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    private List<Bookmark> bookmarks = new ArrayList<>();
     @Builder
     public Place(String placeName, Category category, String city, String detailAddress, double latitude,
                  double longitude) {
@@ -72,5 +76,9 @@ public class Place {
         }
         if(sum == 0) return 0;
         return sum / reviewList.size();
+    }
+
+    public Long getPlaceId() {
+        return id;
     }
 }
