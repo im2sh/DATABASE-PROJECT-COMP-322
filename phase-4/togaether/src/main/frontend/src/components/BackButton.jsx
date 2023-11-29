@@ -12,7 +12,7 @@ const BackButton = () => {
   return (
     <>
       <BacksButton onClick={handleBack}>
-        <BackIcon size="2rem" />
+        <BackIcon size="2.5rem" />
       </BacksButton>
     </>
   );
@@ -25,7 +25,7 @@ const BacksButton = styled.button`
   cursor: pointer;
   padding: 0;
   align-self: flex-start;
-  margin-bottom: 20px;
+  margin-top: 10px;
 `;
 
 const BackIcon = styled(MdKeyboardArrowLeft)`
