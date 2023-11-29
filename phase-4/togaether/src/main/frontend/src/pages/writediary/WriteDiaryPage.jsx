@@ -8,6 +8,8 @@ import {
     FormControl,
     Container,
     Box,
+    Flex,
+    Button
   } from '@chakra-ui/react';
   import happyImage from '../../image/text=happy, size=L.png';
   import excitedImage from '../../image/text=excited, size=L.png';
@@ -15,11 +17,47 @@ import {
   import proudImage from '../../image/text=proud, size=L.png';
   import refreshImage from '../../image/text=refresh, size=L.png';
   import tiredImage from '../../image/text=tired, size=L.png';
-  
+  import { MdNavigateBefore } from "react-icons/md";
+import { BiCheck } from "react-icons/bi";
+import { useNavigate } from 'react-router-dom';
+
+  const AppBar = ({ onBack, onCheck }) => {
+    return (
+      <Flex
+        as="nav"
+        align="center"
+        justify="space-between"
+        wrap="wrap"
+        padding="1.5rem"
+        bg="gray.100"
+        color="black"
+        w="100%"
+      >
+        <Button variant="ghost" onClick={onBack}>
+          <MdNavigateBefore size="24px" />
+        </Button>
+        {/* 드롭다운 메뉴와 다른 컨텐츠가 이 위치에 들어갈 수 있음 */}
+        <Button variant="ghost" onClick={onCheck}>
+          <BiCheck size="24px" />
+        </Button>
+      </Flex>
+    );
+  };
+
 const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState('');
   const [emotion, setEmotion] = useState('행복해요'); // Default emotion or could be ''
   const [pet, setPet] = useState(''); // Default pet
+  const navigate = useNavigate();
+
+
+  const handleBack = () => {
+    navigate(-1); // 뒤로 가기
+  };
+  const handleCheck = () => {
+    // 체크 로직, 예를 들면 폼 데이터를 처리하는 부분
+    console.log('폼 제출 또는 확인');
+  };
 
 // Emotion images mapping
 const emotionImages = {
@@ -45,6 +83,7 @@ const emotionImages = {
 
   return (
     <Container centerContent maxW="container.md">
+        <AppBar onBack={handleBack} onCheck={handleCheck} />
         <VStack spacing={4} 
         align="stretch"
         maxW={{ base: "90%", md: "500px", lg: "800px", xl: "1000px" }} // Adjusts width at various breakpoints
@@ -59,8 +98,7 @@ const emotionImages = {
             <Image
             src={emotionImages[emotion]}
             alt={emotion}
-            boxSize="6.5625rem" // Size from Figma
-            objectFit="cover"
+            boxSize="100%"
             />
         </Box>
         
@@ -83,13 +121,13 @@ const emotionImages = {
         </FormControl>
 
         {/* Textarea for diary entry */}
-        <FormControl id="diary">
+        <FormControl>
             <Textarea
                 placeholder="오늘 하루, 무슨 일이 있었나요? 자유롭게 작성해보세요."
-                size="md"
-                resize="none"
                 value={diaryText}
                 onChange={(e) => setDiaryText(e.target.value)}
+                size="md"
+                resize="none"
                 minHeight="20rem"
             />
         </FormControl>
