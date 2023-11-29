@@ -78,10 +78,12 @@ const PageContainer = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
+const Title = styled.p`
   color: #ff875a;
-  margin-bottom: 40px;
+  margin: 20px 0;
   align-self: flex-start;
+  font-size: 32px;
+  font-weight: 700;
 `;
 
 const SignUpWrapper = styled.div`
