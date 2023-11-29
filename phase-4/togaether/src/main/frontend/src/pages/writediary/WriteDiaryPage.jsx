@@ -20,6 +20,7 @@ import tiredImage from "../../image/text=tired, size=L.png";
 import createDiary from "../../api/createDiary";
 import { BiCheck } from "react-icons/bi";
 import BackButton from "../../components/BackButton";
+import styled from "styled-components";
 
 const AppBar = ({ onCheck }) => {
   return (
@@ -49,6 +50,12 @@ const AppBar = ({ onCheck }) => {
     </Flex>
   );
 };
+
+const WriteDiaryContainer = styled(Container)`
+  * {
+    font-family: Poor Story;
+  }
+`;
 
 const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState("");
@@ -91,7 +98,7 @@ const WriteDiaryPage = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md">
+    <WriteDiaryContainer centerContent maxW="container.md">
       <AppBar onCheck={handleCheck} />
       <VStack
         spacing={4}
@@ -115,22 +122,45 @@ const WriteDiaryPage = () => {
         </Box>
 
         {/* Emotion Dropdown */}
-        <FormControl>
-          <Select value={emotion} onChange={(e) => setEmotion(e.target.value)}>
-            {emotions.map((emotionOption) => (
-              <option value={emotionOption.value} key={emotionOption.value}>
-                {emotionOption.label}
-              </option>
-            ))}
-          </Select>
+        <FormControl className="Emotion__Dropdown">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Select
+              value={emotion}
+              onChange={(e) => setEmotion(e.target.value)}
+              css={{
+                padding: "0 0.5rem",
+              }}
+              w="6.5rem"
+              h="2.25rem"
+              backgroundColor="var(--gray_01)"
+              color="var(--primary_100)"
+            >
+              {emotions.map((emotionOption) => (
+                <option value={emotionOption.value} key={emotionOption.value}>
+                  {emotionOption.label}
+                </option>
+              ))}
+            </Select>
+          </div>
         </FormControl>
 
         {/* Pet Dropdown */}
-        <FormControl>
+        <FormControl className="Pet__Dropdown">
           <Select
             value={pet}
             onChange={(e) => setPet(e.target.value)}
             placeholder="함께할 반려견을 선택해주세요"
+            css={{
+              display: "flex",
+              justifyContent: "center",
+              color: "var(--primary_200)",
+              backgroundColor: "var(--gray_01)",
+            }}
           >
             {pets.map((pet) => (
               <option value={pet} key={pet}>
@@ -152,7 +182,7 @@ const WriteDiaryPage = () => {
           />
         </FormControl>
       </VStack>
-    </Container>
+    </WriteDiaryContainer>
   );
 };
 
