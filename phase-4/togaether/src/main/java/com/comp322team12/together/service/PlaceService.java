@@ -2,12 +2,17 @@ package com.comp322team12.together.service;
 
 import com.comp322team12.together.domain.Place;
 import com.comp322team12.together.domain.Review;
+import com.comp322team12.together.domain.User.User;
+import com.comp322team12.together.domain.bookmark.Bookmark;
 import com.comp322team12.together.domain.constants.Category;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
+import com.comp322team12.together.exception.place.NotBookmarkException;
+import com.comp322team12.together.repository.BookmarkRepository;
 import com.comp322team12.together.repository.PlaceRepository;
 import com.comp322team12.together.repository.ReviewRepository;
+import com.comp322team12.together.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlaceService {
     private final PlaceRepository placeRepository;
-    private final ReviewRepository reviewRepository;
-
+    private final BookmarkRepository bookmarkRepository;
     public List<PlaceResponse> findAllPlace() {
         List<Place> allPlace = placeRepository.findAll();
         List<PlaceResponse> placeResponses = new ArrayList<>();
@@ -68,6 +72,18 @@ public class PlaceService {
             if(averageRating >= Integer.parseInt(minRating) && averageRating <= Integer.parseInt(maxRating)){
                 placeResponses.add(place.toResponse());
             }
+        }
+        return placeResponses;
+    }
+
+    public List<PlaceResponse> findBookmarkByUserId(Long userId) {
+        List<Bookmark> bookmarkByUserId = bookmarkRepository.findByUserId(userId);
+        if(bookmarkByUserId.isEmpty())
+            throw new NotBookmarkException("북마크한 장소가 없습니다.");
+        List<PlaceResponse> placeResponses = new ArrayList<>();
+        for (Bookmark bookmark : bookmarkByUserId) {
+            Place place = bookmark.getId().getPlace();
+            placeResponses.add(place.toResponse());
         }
         return placeResponses;
     }

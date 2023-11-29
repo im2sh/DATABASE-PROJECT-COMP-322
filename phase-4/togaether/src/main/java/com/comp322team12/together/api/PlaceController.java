@@ -4,6 +4,7 @@ import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
 import com.comp322team12.together.exception.place.InvalidRatingException;
+import com.comp322team12.together.exception.place.NotBookmarkException;
 import com.comp322team12.together.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -90,6 +91,24 @@ public class PlaceController {
             List<PlaceResponse> placesByRatingRange = placeService.findPlacesByRatingRange(minRating, maxRating);
             return ResponseEntity.ok().body(placesByRatingRange);
         } catch (InvalidRatingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "북마크한 장소 조회",
+            description = "북마크한 장소를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "북마크한 장소 조회에 성공하였습니다."
+    )
+    @GetMapping("/bookmark/{userId}")
+    public ResponseEntity<?> findBookmarkByUserId(@PathVariable Long userId) {
+        try {
+            List<PlaceResponse> placeResponse = placeService.findBookmarkByUserId(userId);
+            return ResponseEntity.ok().body(placeResponse);
+        } catch (NotBookmarkException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
