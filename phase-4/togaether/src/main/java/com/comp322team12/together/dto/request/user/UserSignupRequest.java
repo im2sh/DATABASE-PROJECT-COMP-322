@@ -1,4 +1,4 @@
-package com.comp322team12.together.dto.request;
+package com.comp322team12.together.dto.request.user;
 
 import com.comp322team12.together.domain.User.User;
 

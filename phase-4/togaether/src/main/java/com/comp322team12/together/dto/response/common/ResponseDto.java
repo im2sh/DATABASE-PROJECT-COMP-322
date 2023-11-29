@@ -1,4 +1,4 @@
-package com.comp322team12.together.dto.response;
+package com.comp322team12.together.dto.response.common;
 
 import lombok.Data;
 

@@ -27,7 +27,7 @@ public class Review {
     @Column(name = "CONTENT", nullable = false)
     private String content;
 
-    @Column(name = "CREATE_DATE", nullable = false)
+    @Column(name = "CREATED_DATE", nullable = false)
     private LocalDateTime createdDate;
 
     @ManyToOne
@@ -45,5 +45,9 @@ public class Review {
         this.createdDate = createdDate;
         this.user = user;
         this.place = place;
+    }
+
+    public Integer getRating() {
+        return rating;
     }
 }
