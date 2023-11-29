@@ -139,6 +139,7 @@ const WriteDiaryPage = () => {
               h="2.25rem"
               backgroundColor="var(--gray_01)"
               color="var(--primary_100)"
+              focusBorderColor="#FF875A"
             >
               {emotions.map((emotionOption) => (
                 <option value={emotionOption.value} key={emotionOption.value}>
@@ -155,12 +156,9 @@ const WriteDiaryPage = () => {
             value={pet}
             onChange={(e) => setPet(e.target.value)}
             placeholder="함께할 반려견을 선택해주세요"
-            css={{
-              display: "flex",
-              justifyContent: "center",
-              color: "var(--primary_200)",
-              backgroundColor: "var(--gray_01)",
-            }}
+            backgroundColor="var(--gray_01)"
+            color="var(--primary_200)"
+            focusBorderColor="#CE7149"
           >
             {pets.map((pet) => (
               <option value={pet} key={pet}>
