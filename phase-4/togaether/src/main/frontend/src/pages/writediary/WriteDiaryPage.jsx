@@ -18,27 +18,32 @@ import proudImage from "../../image/text=proud, size=L.png";
 import refreshImage from "../../image/text=refresh, size=L.png";
 import tiredImage from "../../image/text=tired, size=L.png";
 import createDiary from "../../api/createDiary";
-import { MdNavigateBefore } from "react-icons/md";
 import { BiCheck } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import BackButton from "../../components/BackButton";
 
-const AppBar = ({ onBack, onCheck }) => {
+const AppBar = ({ onCheck }) => {
   return (
     <Flex
       as="nav"
       align="center"
       justify="space-between"
       wrap="wrap"
-      padding="1.5rem"
+      padding="0.625rem 1.5rem 0.625rem 1.9375rem"
       bg="gray.100"
       color="black"
       w="100%"
+      h="3rem"
     >
-      <Button variant="ghost" onClick={onBack}>
-        <MdNavigateBefore size="24px" />
-      </Button>
+      <BackButton />
       {/* 드롭다운 메뉴와 다른 컨텐츠가 이 위치에 들어갈 수 있음 */}
-      <Button variant="ghost" onClick={onCheck}>
+      <Button
+        css={{
+          height: "32px",
+          padding: "0",
+        }}
+        variant="ghost"
+        onClick={onCheck}
+      >
         <BiCheck size="24px" />
       </Button>
     </Flex>
@@ -49,7 +54,6 @@ const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState("");
   const [emotion, setEmotion] = useState("행복해요"); // Default emotion or could be ''
   const [pet, setPet] = useState(""); // Default pet
-  const navigate = useNavigate();
 
   // Emotion images mapping
   const emotionImages = {
@@ -73,9 +77,6 @@ const WriteDiaryPage = () => {
 
   const pets = ["반려견1", "반려견2", "반려견3"]; // Replace with actual pet names
 
-  const handleBack = () => {
-    navigate(-1); // 뒤로 가기
-  };
   const handleCheck = async () => {
     // 체크 로직, 예를 들면 폼 데이터를 처리하는 부분
     const payload = {
@@ -91,7 +92,7 @@ const WriteDiaryPage = () => {
 
   return (
     <Container centerContent maxW="container.md">
-      <AppBar onBack={handleBack} onCheck={handleCheck} />
+      <AppBar onCheck={handleCheck} />
       <VStack
         spacing={4}
         align="stretch"
