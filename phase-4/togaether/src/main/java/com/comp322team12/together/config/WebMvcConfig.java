@@ -1,4 +1,4 @@
-package com.comp322team12.together;
+package com.comp322team12.together.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

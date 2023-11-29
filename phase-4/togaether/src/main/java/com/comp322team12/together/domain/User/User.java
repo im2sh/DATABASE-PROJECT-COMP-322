@@ -3,6 +3,7 @@ package com.comp322team12.together.domain.User;
 import com.comp322team12.together.domain.Coupon;
 import com.comp322team12.together.domain.Reservation;
 import com.comp322team12.together.domain.Review;
+import com.comp322team12.together.domain.bookmark.Bookmark;
 import com.comp322team12.together.domain.pet.Pet;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,7 +28,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
     @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
     @Column(name = "USERS_ID")
-    private Long userId;
+    private Long id;
 
     @Column(name = "USER_NAME", nullable = false)
     private String userName;
@@ -53,6 +54,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
     @Builder
     public User(String userName, String phoneNumber, String email, String password) {
         this.userName = userName;
@@ -62,7 +66,7 @@ public class User {
     }
 
     public Long getUserId() {
-        return userId;
+        return id;
     }
 
     public String getUserName() {
