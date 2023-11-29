@@ -9,39 +9,45 @@ const LoginForm = ({
   password,
   setPassword,
   loading,
-}) => (
-  <Form onSubmit={onLogin}>
-    <InputContainer>
-      <label htmlFor="email">Email</label>
-      <InputWithIcon>
-        <MdOutlineAlternateEmail className="icon" size="1.5em" />
-        <input
-          type="email"
-          id="email"
-          placeholder="abc@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </InputWithIcon>
-    </InputContainer>
-    <InputContainer>
-      <label htmlFor="password">Your Password</label>
-      <InputWithIcon>
-        <FiLock className="icon" size="1.5em" />
-        <input
-          type="password"
-          id="password"
-          placeholder="Input your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </InputWithIcon>
-    </InputContainer>
-    <LoginButton type="submit">{loading ? "Loading..." : "로그인"}</LoginButton>
-  </Form>
-);
+}) => {
+  return (
+    <>
+      <Form onSubmit={onLogin}>
+        <InputContainer>
+          <label htmlFor="email">Email</label>
+          <InputWithIcon>
+            <MdOutlineAlternateEmail className="icon" size="1.5em" />
+            <input
+              type="email"
+              id="email"
+              placeholder="abc@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </InputWithIcon>
+        </InputContainer>
+        <InputContainer>
+          <label htmlFor="password">Your Password</label>
+          <InputWithIcon>
+            <FiLock className="icon" size="1.5em" />
+            <input
+              type="password"
+              id="password"
+              placeholder="Input your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </InputWithIcon>
+        </InputContainer>
+        <LoginButton type="submit">
+          {loading ? "Loading..." : "로그인"}
+        </LoginButton>
+      </Form>
+    </>
+  );
+};
 
 const Form = styled.form`
   width: 100%;

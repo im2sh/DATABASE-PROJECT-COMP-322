@@ -1,19 +1,13 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
-import { MdKeyboardArrowLeft } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import ChangePasswordForm from "../../components/ChangePasswordForm";
+import BackButton from "../../components/BackButton";
 
 const ChangePasswordPage = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1); // 뒤로가기
-  };
 
   const handleConfirm = async (event) => {
     event.preventDefault();
@@ -37,9 +31,7 @@ const ChangePasswordPage = () => {
   return (
     <>
       <PageContainer>
-        <BackButton onClick={handleBack}>
-          <BackIcon size="2rem" />
-        </BackButton>
+        <BackButton />
         <Title>Change Password</Title>
         <ChangePasswordForm
           onConfirm={handleConfirm}
@@ -59,20 +51,6 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
-`;
-
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 0;
-  align-self: flex-start;
-  margin-bottom: 20px;
-`;
-
-const BackIcon = styled(MdKeyboardArrowLeft)`
-  cursor: pointer;
 `;
 
 const Title = styled.h1`
