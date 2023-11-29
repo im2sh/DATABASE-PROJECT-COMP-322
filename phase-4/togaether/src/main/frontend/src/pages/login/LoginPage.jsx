@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/LoginForm";
+import BackButton from "../../components/BackButton";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +11,6 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1); // 뒤로가기
-  };
 
   const handleGoToSignup = () => {
     navigate("/signup");
@@ -24,10 +20,12 @@ const LoginPage = () => {
     navigate("/changePassword");
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
+    // api 연결이 아직 안 되었기 때문에 일단 이렇게 home 넘어가도록
+    navigate("/home");
 
     try {
       const response = await axios.post("/api/login", { email, password });
@@ -45,9 +43,7 @@ const LoginPage = () => {
 
   return (
     <PageContainer>
-      <BackButton onClick={handleBack}>
-        <BackIcon size="2rem" />
-      </BackButton>
+      <BackButton />
       <Title>Login</Title>
       <LoginForm
         onLogin={handleLogin}
@@ -80,20 +76,6 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
-`;
-
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 0;
-  align-self: flex-start;
-  margin-bottom: 20px;
-`;
-
-const BackIcon = styled(MdKeyboardArrowLeft)`
-  cursor: pointer;
 `;
 
 const Title = styled.h1`
