@@ -45,17 +45,27 @@ const emotionImages = {
 
   return (
     <Container centerContent maxW="container.md">
-        <VStack spacing={4} align="center" m={4}>
+        <VStack spacing={4} 
+        align="stretch"
+        maxW={{ base: "90%", md: "500px", lg: "800px", xl: "1000px" }} // Adjusts width at various breakpoints
+        w="100%" // Ensures that VStack takes up the full width of the container on smaller screens
+        m="auto"
+        >
          {/* Dynamic Emotion Image */}
-         <Image
-          src={emotionImages[emotion]}
-          alt={emotion}
-          boxSize="6.5625rem" // Size from Figma
-          objectFit="cover"
-        />
+         <Box
+          boxSize={{ base: "120px", sm: "150px", md: "200px", lg: "250px", xl: "300px" }} // Responsive box size
+          margin="auto" // Centers the image
+        >
+            <Image
+            src={emotionImages[emotion]}
+            alt={emotion}
+            boxSize="6.5625rem" // Size from Figma
+            objectFit="cover"
+            />
+        </Box>
         
         {/* Emotion Dropdown */}
-        <FormControl id="emotion">
+        <FormControl>
             <Select value={emotion} onChange={(e) => setEmotion(e.target.value)}>
             {emotions.map((emotionOption) => (
             <option value={emotionOption.value} key={emotionOption.value}>{emotionOption.label}</option>
@@ -81,7 +91,6 @@ const emotionImages = {
                 value={diaryText}
                 onChange={(e) => setDiaryText(e.target.value)}
                 minHeight="20rem"
-                w="100%" // Set the width to 100% of the parent container
             />
         </FormControl>
         </VStack>
