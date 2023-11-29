@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jdk.jshell.Snippet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -36,5 +37,16 @@ public class Bookmark {
 
     public BookmarkId getId() {
         return id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void changeStatus() {
+        if(status == 1)
+            this.status = 0;
+        else if(status == 0)
+            this.status = 1;
     }
 }

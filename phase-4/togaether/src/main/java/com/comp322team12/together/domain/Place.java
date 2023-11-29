@@ -77,4 +77,8 @@ public class Place {
         if(sum == 0) return 0;
         return sum / reviewList.size();
     }
+
+    public Long getPlaceId() {
+        return id;
+    }
 }
