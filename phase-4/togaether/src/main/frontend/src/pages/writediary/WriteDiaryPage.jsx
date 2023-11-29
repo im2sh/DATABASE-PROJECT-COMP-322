@@ -7,9 +7,8 @@ import {
     Image,
     FormControl,
     Container,
-      Box,
+    Box,
   } from '@chakra-ui/react';
-
   import happyImage from '../../image/text=happy, size=L.png';
   import excitedImage from '../../image/text=excited, size=L.png';
   import loveImage from '../../image/text=love, size=L.png';
@@ -19,7 +18,7 @@ import {
   
 const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState('');
-  const [emotion, setEmotion] = useState('happy'); // Default emotion or could be ''
+  const [emotion, setEmotion] = useState('행복해요'); // Default emotion or could be ''
   const [pet, setPet] = useState(''); // Default pet
 
 // Emotion images mapping
@@ -34,12 +33,12 @@ const emotionImages = {
 
   // Emotion dropdown options
   const emotions = [
-    { value: 'happy', label: '행복해요' },
-    { value: 'excited', label: '신나요' },
-    { value: 'proud', label: '뿌듯해요' },
-    { value: 'refresh', label: '상쾌해요' },
-    { value: 'love', label: '설레요' },
-    { value: 'tired', label: '피곤해요' }
+    { value: '행복해요', label: '행복해요' },
+    { value: '신나요', label: '신나요' },
+    { value: '뿌듯해요', label: '뿌듯해요' },
+    { value: '상쾌해요', label: '상쾌해요' },
+    { value: '설레요', label: '설레요' },
+    { value: '피곤해요', label: '피곤해요' }
   ];
 
   const pets = ['반려견1', '반려견2', '반려견3']; // Replace with actual pet names
@@ -47,10 +46,13 @@ const emotionImages = {
   return (
     <Container centerContent maxW="container.md">
         <VStack spacing={4} align="center" m={4}>
-        {/* Emotion Image */}
-        <Box boxSize="6.5625rem">
-            <Image src={happyImage} alt="Happy" boxSize="100%" objectFit="cover" />
-        </Box>
+         {/* Dynamic Emotion Image */}
+         <Image
+          src={emotionImages[emotion]}
+          alt={emotion}
+          boxSize="6.5625rem" // Size from Figma
+          objectFit="cover"
+        />
         
         {/* Emotion Dropdown */}
         <FormControl id="emotion">
