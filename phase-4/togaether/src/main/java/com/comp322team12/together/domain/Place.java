@@ -64,4 +64,13 @@ public class Place {
     public PlaceResponse toResponse(){
         return new PlaceResponse(placeName, category.getType(), city, detailAddress, latitude, longitude);
     }
+
+    public double getAverageRating() {
+        int sum = 0;
+        for(Review review : reviewList){
+            sum += review.getRating();
+        }
+        if(sum == 0) return 0;
+        return sum / reviewList.size();
+    }
 }

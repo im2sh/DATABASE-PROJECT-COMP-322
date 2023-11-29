@@ -3,6 +3,7 @@ package com.comp322team12.together.api;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
+import com.comp322team12.together.exception.place.InvalidRatingException;
 import com.comp322team12.together.service.PlaceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -45,6 +46,16 @@ public class PlaceController {
             List<PlaceResponse> places = placeService.findPlaceByCategory(category);
             return ResponseEntity.ok().body(places);
         } catch (InvalidCategoryException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("rating/{minRating}/{maxRating}")
+    public ResponseEntity<?> findPlaceByRating(@PathVariable String minRating, @PathVariable String maxRating) {
+        try {
+            List<PlaceResponse> placesByRatingRange = placeService.findPlacesByRatingRange(minRating, maxRating);
+            return ResponseEntity.ok().body(placesByRatingRange);
+        } catch (InvalidRatingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

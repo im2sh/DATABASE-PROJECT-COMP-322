@@ -1,11 +1,13 @@
 package com.comp322team12.together.service;
 
 import com.comp322team12.together.domain.Place;
+import com.comp322team12.together.domain.Review;
 import com.comp322team12.together.domain.constants.Category;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import com.comp322team12.together.exception.place.InvalidCategoryException;
 import com.comp322team12.together.exception.place.InvalidCityException;
 import com.comp322team12.together.repository.PlaceRepository;
+import com.comp322team12.together.repository.ReviewRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlaceService {
     private final PlaceRepository placeRepository;
+    private final ReviewRepository reviewRepository;
 
     public List<PlaceResponse> findAllPlace() {
         List<Place> allPlace = placeRepository.findAll();
@@ -55,5 +58,17 @@ public class PlaceService {
         }  catch (InvalidCityException e) {
             throw e;
         }
+    }
+
+    public List<PlaceResponse> findPlacesByRatingRange(String minRating, String maxRating) {
+        List<Place> all = placeRepository.findAll();
+        List<PlaceResponse> placeResponses = new ArrayList<>();
+        for (Place place : all) {
+            double averageRating = place.getAverageRating();
+            if(averageRating >= Integer.parseInt(minRating) && averageRating <= Integer.parseInt(maxRating)){
+                placeResponses.add(place.toResponse());
+            }
+        }
+        return placeResponses;
     }
 }
