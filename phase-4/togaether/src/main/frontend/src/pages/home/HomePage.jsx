@@ -1,14 +1,86 @@
 import styled from "styled-components";
 import BackButton from "../../components/BackButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import logoImage from "../../image/logo.png";
 import StoreItem from "../../components/StoreItem";
+import Pagination from "../../components/Pagination";
+import usePagination from "../../hooks/usePagination";
+
+const ITEMS_PER_PAGE = 5;
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("지역별");
   const [activeLocation, setActiveLocation] = useState("");
-  const tabTitles = ["지역별", "분류별", "종류별"];
+  const tabTitles = ["지역별", "분류별", "즐겨찾기"];
   const activeIndex = tabTitles.indexOf(activeTab);
+  const [bookmarks, setBookmarks] = useState(new Set());
+
+  const handleBookmarkToggle = (id) => {
+    setBookmarks((prevBookmarks) => {
+      const updatedBookmarks = new Set(prevBookmarks);
+      console.log("현재 북마크 상태:", Array.from(updatedBookmarks));
+      console.log("토글되는 아이템 ID:", id);
+
+      if (updatedBookmarks.has(id)) {
+        updatedBookmarks.delete(id);
+      } else {
+        updatedBookmarks.add(id);
+      }
+
+      console.log("업데이트 후 북마크 상태:", Array.from(updatedBookmarks));
+      return updatedBookmarks;
+    });
+  };
+
+  // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
+  const [storeData, setStoreData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/place/all")
+      .then((response) => {
+        const processedData = processStoreDataByCity(response.data);
+        setStoreData(processedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching store data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(storeData).length > 0 && !activeLocation) {
+      setActiveLocation(Object.keys(storeData)[0]);
+    }
+  }, [storeData, activeLocation]);
+
+  const processStoreDataByCity = (data) => {
+    const storeDataByCity = {};
+
+    data.forEach((item, index) => {
+      const cityName = item.city.split(" ")[0].replace("광역시", "");
+      if (!storeDataByCity[cityName]) {
+        storeDataByCity[cityName] = [];
+      }
+      const itemId = `generated-id-${index}`; // ID 생성
+      storeDataByCity[cityName].push({
+        id: itemId,
+        name: item.placeName,
+        category: item.category.toLowerCase(),
+        address: `${item.city} ${item.detailAddress}`,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      });
+    });
+
+    return storeDataByCity;
+  };
+
+  // pagination
+  const { paginatedData, totalPages, currentPage, changePage } = usePagination(
+    storeData[activeLocation] || [],
+    ITEMS_PER_PAGE
+  );
 
   return (
     <PageContainer>
@@ -30,47 +102,43 @@ const HomePage = () => {
       </TabContainer>
       <ContentContainer>
         {activeTab === "지역별" && (
-          <LocationButtons>
-            <LocationButton
-              active={activeLocation === "대구"}
-              onClick={() => setActiveLocation("대구")}
-            >
-              대구
-            </LocationButton>
-            <LocationButton
-              active={activeLocation === "부산"}
-              onClick={() => setActiveLocation("부산")}
-            >
-              부산
-            </LocationButton>
-            <LocationButton
-              active={activeLocation === "경북"}
-              onClick={() => setActiveLocation("경북")}
-            >
-              경북
-            </LocationButton>
-          </LocationButtons>
+          <>
+            <LocationButtons>
+              {Object.keys(storeData).map((location) => (
+                <LocationButton
+                  key={location}
+                  active={activeLocation === location}
+                  onClick={() => setActiveLocation(location)}
+                >
+                  {location}
+                </LocationButton>
+              ))}
+            </LocationButtons>
+            {activeLocation && (
+              <>
+                <StoreList>
+                  {paginatedData.map((item, index) => (
+                    <StoreItem
+                      key={index}
+                      id={item.id} // id 값 고유
+                      {...item}
+                      onBookmarkToggle={handleBookmarkToggle}
+                      isBookmarked={bookmarks.has(item.id)}
+                    />
+                  ))}
+                </StoreList>
+                <Pagination
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  changePage={changePage}
+                />
+              </>
+            )}
+          </>
         )}
         {activeTab === "분류별" && <div>분류별 컨텐츠...</div>}
-        {activeTab === "평점별" && <div>평점별 컨텐츠...</div>}
+        {activeTab === "즐겨찾기" && <div>즐겨찾기별 컨텐츠...</div>}
       </ContentContainer>
-      <StoreList>
-        <StoreItem
-          category="cafe"
-          name="신당동 마카롱 카페"
-          address="대구광역시 달서구 신당동 1838-14"
-        />
-        <StoreItem
-          category="restaurant"
-          name="장충동 맛있는 족발"
-          address="대구광역시 남구 대명동 1155-8"
-        />
-        <StoreItem
-          category="bar"
-          name="쌈뽕포차 성당점"
-          address="대구광역시 달서구 성당동 263-2 1층"
-        />
-      </StoreList>
     </PageContainer>
   );
 };

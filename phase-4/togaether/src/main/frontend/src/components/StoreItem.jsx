@@ -3,7 +3,6 @@ import categoryBar from "../image/category_bar.png";
 import categoryCafe from "../image/category_cafe.png";
 import categoryDining from "../image/category_dining.png";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
-import { useState } from "react";
 
 const getCategoryIcon = (category) => {
   const icons = {
@@ -14,38 +13,39 @@ const getCategoryIcon = (category) => {
   return icons[category] || categoryDining;
 };
 
-const StoreItem = ({ category, name, address }) => {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-
-  const toggleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-  };
+const StoreItem = ({
+  id,
+  category,
+  name,
+  address,
+  onBookmarkToggle,
+  isBookmarked,
+}) => {
+  console.log(`아이템 ID: ${id}, 북마크 상태: ${isBookmarked}`);
 
   return (
-    <>
-      <Item>
-        <CategoryIconWrapper>
-          <CategoryIcon src={getCategoryIcon(category)}></CategoryIcon>
-        </CategoryIconWrapper>
-        <StoreDetails>
-          <StoreNameAndReservation>
-            <StoreName>{name}</StoreName>
-            <ReservationButton>예약</ReservationButton>
-          </StoreNameAndReservation>
-          <Address>{address}</Address>
-          <Actions>
-            <BookmarkButton onClick={toggleBookmark}>
-              {isBookmarked ? (
-                <FaBookmark size={15} />
-              ) : (
-                <FaRegBookmark size={15} />
-              )}
-            </BookmarkButton>
-            <ViewDiaryLink>작성한 일기보기</ViewDiaryLink>
-          </Actions>
-        </StoreDetails>
-      </Item>
-    </>
+    <Item>
+      <CategoryIconWrapper>
+        <CategoryIcon src={getCategoryIcon(category)} />
+      </CategoryIconWrapper>
+      <StoreDetails>
+        <StoreNameAndReservation>
+          <StoreName>{name}</StoreName>
+          <ReservationButton>예약</ReservationButton>
+        </StoreNameAndReservation>
+        <Address>{address}</Address>
+        <Actions>
+          <BookmarkButton onClick={() => onBookmarkToggle(id)}>
+            {isBookmarked ? (
+              <FaBookmark size={15} />
+            ) : (
+              <FaRegBookmark size={15} />
+            )}
+          </BookmarkButton>
+          <ViewDiaryLink>작성한 일기보기</ViewDiaryLink>
+        </Actions>
+      </StoreDetails>
+    </Item>
   );
 };
 
