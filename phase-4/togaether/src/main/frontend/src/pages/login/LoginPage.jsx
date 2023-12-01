@@ -24,13 +24,19 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    // api 연결이 아직 안 되었기 때문에 일단 이렇게 home 넘어가도록
-    navigate("/home");
 
     try {
-      const response = await axios.post("/api/login", { email, password });
-      localStorage.setItem("token", response.data.token);
+      const response = await axios.post(
+        "http://localhost:8080/api/user/login",
+        {
+          email,
+          password,
+        }
+      );
       setLoading(false);
+      localStorage.setItem("userId", response.data.UserId);
+      localStorage.setItem("userName", response.data.userName);
+      navigate("/home");
     } catch (err) {
       setLoading(false);
       setError(
@@ -78,10 +84,12 @@ const PageContainer = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
+const Title = styled.p`
   color: #ff875a;
-  margin-bottom: 40px;
+  margin: 20px 0;
   align-self: flex-start;
+  font-size: 32px;
+  font-weight: 700;
 `;
 
 const SignUpWrapper = styled.div`
