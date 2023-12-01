@@ -2,7 +2,6 @@ package com.comp322team12.together.domain;
 
 import com.comp322team12.together.domain.bookmark.Bookmark;
 import com.comp322team12.together.domain.constants.Category;
-import com.comp322team12.together.domain.contains.Contains;
 import com.comp322team12.together.dto.response.place.PlaceResponse;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,10 +49,11 @@ public class Place {
     private List<Event> eventList = new ArrayList<>();
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
-    private List<Contains> contains = new ArrayList<>();
+    private List<Diary> diaries = new ArrayList<>();
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
     @Builder
     public Place(String placeName, Category category, String city, String detailAddress, double latitude,
                  double longitude) {
@@ -65,20 +65,30 @@ public class Place {
         this.longitude = longitude;
     }
 
-    public PlaceResponse toResponse(){
-        return new PlaceResponse(placeName, category.getType(), city, detailAddress, latitude, longitude);
+    public PlaceResponse toResponse() {
+        return new PlaceResponse(id, placeName, category.getType(), city, detailAddress, latitude, longitude);
     }
 
     public double getAverageRating() {
         int sum = 0;
-        for(Review review : reviewList){
+        for (Review review : reviewList) {
             sum += review.getRating();
         }
-        if(sum == 0) return 0;
+        if (sum == 0) {
+            return 0;
+        }
         return sum / reviewList.size();
     }
 
+    public void addDiary(Diary diary) {
+        this.diaries.add(diary);
+    }
+
     public Long getPlaceId() {
+        return id;
+    }
+
+    public Long getId() {
         return id;
     }
 }

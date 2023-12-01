@@ -6,11 +6,12 @@ import com.comp322team12.together.dto.request.user.UserLoginRequest;
 import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
 import com.comp322team12.together.dto.request.user.UserSignupRequest;
 import com.comp322team12.together.dto.response.common.ResponseDto;
+import com.comp322team12.together.dto.response.user.UserLoginResponse;
 import com.comp322team12.together.exception.user.DuplicateEmailException;
 import com.comp322team12.together.exception.user.IncorrectPassword;
 import com.comp322team12.together.exception.user.NotEmailException;
 import com.comp322team12.together.exception.user.NotPasswordException;
-import com.comp322team12.together.service.user.UserService;
+import com.comp322team12.together.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -62,7 +63,7 @@ public class UserController {
             description = "로그인에 성공하였습니다."
     )
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto> login(@RequestBody @Validated UserLoginRequest userLoginRequest,
+    public ResponseEntity<UserLoginResponse> login(@RequestBody @Validated UserLoginRequest userLoginRequest,
                                                    HttpServletRequest request) {
         try {
             String email = userLoginRequest.email();
@@ -71,11 +72,9 @@ public class UserController {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_MEMBER, user.getUserId());
 
-            return ResponseEntity.ok().body(new ResponseDto("로그인에 성공하였습니다."));
-        } catch (NotEmailException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
-        } catch (NotPasswordException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+            return ResponseEntity.ok().body(new UserLoginResponse(user.getUserId(), user.getUserName()));
+        } catch (NotEmailException | NotPasswordException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserLoginResponse(null, null));
         }
     }
 
