@@ -138,9 +138,11 @@ const HomePage = () => {
 
   useEffect(() => {
     if (activeTab === "즐겨찾기") {
-      // 사용자 ID
-      const userId = 2;
-      fetchBookmarkedPlaces(userId);
+      // 로컬 스토리지에서 userId 가져오기
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        fetchBookmarkedPlaces(userId);
+      }
     }
   }, [activeTab]);
 
