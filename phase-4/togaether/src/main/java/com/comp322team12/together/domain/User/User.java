@@ -1,6 +1,7 @@
 package com.comp322team12.together.domain.User;
 
 import com.comp322team12.together.domain.Coupon;
+import com.comp322team12.together.domain.Diary;
 import com.comp322team12.together.domain.Reservation;
 import com.comp322team12.together.domain.Review;
 import com.comp322team12.together.domain.bookmark.Bookmark;
@@ -57,6 +58,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Diary> diaries = new ArrayList<>();
+
     @Builder
     public User(String userName, String phoneNumber, String email, String password) {
         this.userName = userName;
@@ -79,5 +83,9 @@ public class User {
 
     public void pwUpdate(String password) {
         this.password = password;
+    }
+
+    public void addDiary(Diary diary) {
+        this.diaries.add(diary);
     }
 }

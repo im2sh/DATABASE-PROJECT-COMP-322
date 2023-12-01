@@ -1,4 +1,4 @@
-package com.comp322team12.together.service.user;
+package com.comp322team12.together.service;
 
 import com.comp322team12.together.domain.User.User;
 import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
@@ -28,6 +28,7 @@ public class UserService {
     }
 
     public User authenticate(String email, String password) {
+        System.out.println(email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotEmailException("가입되지 않은 이메일입니다."));
         if (!user.getPassword().equals(password)) {

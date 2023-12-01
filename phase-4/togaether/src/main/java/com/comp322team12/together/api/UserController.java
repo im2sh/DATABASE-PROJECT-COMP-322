@@ -11,7 +11,7 @@ import com.comp322team12.together.exception.user.DuplicateEmailException;
 import com.comp322team12.together.exception.user.IncorrectPassword;
 import com.comp322team12.together.exception.user.NotEmailException;
 import com.comp322team12.together.exception.user.NotPasswordException;
-import com.comp322team12.together.service.user.UserService;
+import com.comp322team12.together.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
