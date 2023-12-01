@@ -1,4 +1,4 @@
-package com.comp322team12.together.service.user;
+package com.comp322team12.together.service;
 
 import com.comp322team12.together.domain.User.User;
 import com.comp322team12.together.dto.request.user.UserPwModificationRequest;
