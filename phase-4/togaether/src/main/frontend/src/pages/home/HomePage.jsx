@@ -35,6 +35,8 @@ const HomePage = () => {
 
   // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
   const [storeData, setStoreData] = useState({});
+  const [storeDataByCategory, setStoreDataByCategory] = useState({});
+  const [activeCategory, setActiveCategory] = useState("dining");
 
   useEffect(() => {
     axios
@@ -42,6 +44,10 @@ const HomePage = () => {
       .then((response) => {
         const processedData = processStoreDataByCity(response.data);
         setStoreData(processedData);
+
+        // 분류별로 데이터 처리
+        const dataByCategory = processStoreDataByCategory(response.data);
+        setStoreDataByCategory(dataByCategory);
       })
       .catch((error) => {
         console.error("Error fetching store data:", error);
@@ -82,6 +88,32 @@ const HomePage = () => {
     ITEMS_PER_PAGE
   );
 
+  const processStoreDataByCategory = (data) => {
+    const categoryData = data.reduce((acc, item) => {
+      const category = item.category.toLowerCase();
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push({
+        id: item.id, // 또는 고유 ID 생성
+        name: item.placeName,
+        category: item.category.toLowerCase(),
+        address: `${item.city} ${item.detailAddress}`,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      });
+      return acc;
+    }, {});
+    return categoryData;
+  };
+
+  const {
+    paginatedData: paginatedCategoryData,
+    totalPages: totalCategoryPages,
+    currentPage: currentCategoryPage,
+    changePage: changeCategoryPage,
+  } = usePagination(storeDataByCategory[activeCategory] || [], ITEMS_PER_PAGE);
+
   return (
     <PageContainer>
       <BackButton />
@@ -103,6 +135,7 @@ const HomePage = () => {
       <ContentContainer>
         {activeTab === "지역별" && (
           <>
+            {/* 지역별 버튼들 */}
             <LocationButtons>
               {Object.keys(storeData).map((location) => (
                 <LocationButton
@@ -114,8 +147,10 @@ const HomePage = () => {
                 </LocationButton>
               ))}
             </LocationButtons>
+
             {activeLocation && (
               <>
+                {/* 지역별 리스트 */}
                 <StoreList>
                   {paginatedData.map((item, index) => (
                     <StoreItem
@@ -127,6 +162,8 @@ const HomePage = () => {
                     />
                   ))}
                 </StoreList>
+
+                {/* 페이징 컴포넌트 */}
                 <Pagination
                   totalPages={totalPages}
                   currentPage={currentPage}
@@ -136,7 +173,42 @@ const HomePage = () => {
             )}
           </>
         )}
-        {activeTab === "분류별" && <div>분류별 컨텐츠...</div>}
+        {activeTab === "분류별" && (
+          <>
+            {/* 분류별 버튼들 */}
+            <CategoryButtons>
+              {Object.keys(storeDataByCategory).map((category) => (
+                <CategoryButton
+                  key={category}
+                  active={activeCategory === category}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </CategoryButton>
+              ))}
+            </CategoryButtons>
+
+            {/* 분류별 리스트 */}
+            <StoreList>
+              {paginatedCategoryData.map((item, index) => (
+                <StoreItem
+                  key={index}
+                  id={item.id}
+                  {...item}
+                  onBookmarkToggle={handleBookmarkToggle}
+                  isBookmarked={bookmarks.has(item.id)}
+                />
+              ))}
+            </StoreList>
+
+            {/* 페이징 컴포넌트 */}
+            <Pagination
+              totalPages={totalCategoryPages}
+              currentPage={currentCategoryPage}
+              changePage={changeCategoryPage}
+            />
+          </>
+        )}
         {activeTab === "즐겨찾기" && <div>즐겨찾기별 컨텐츠...</div>}
       </ContentContainer>
     </PageContainer>
@@ -172,6 +244,33 @@ const LocationButtons = styled.div`
 `;
 
 const LocationButton = styled.button`
+  color: #73160a;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  padding: 7px 25px;
+  border-radius: 20px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  border-color: #ff875a;
+
+  ${({ active }) =>
+    active &&
+    `
+      background-color: #F7D49F;
+    `}
+`;
+
+const CategoryButtons = styled.div`
+  display: flex;
+  width: calc(100% + 40px);
+  margin: 10px -20px;
+  padding: 5px 20px;
+  background-color: #fcf6ee;
+`;
+
+const CategoryButton = styled.button`
   color: #73160a;
   font-size: 1rem;
   border: 1px solid #ddd;
