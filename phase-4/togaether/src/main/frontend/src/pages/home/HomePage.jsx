@@ -123,7 +123,7 @@ const HomePage = () => {
         `http://localhost:8080/api/place/bookmark/${userId}`
       );
       const processedData = response.data.map((item, index) => ({
-        id: `bookmark-id-${index}`,
+        id: `bookmark-id-${index}`, // 이렇게 ID를 생성하거나 실제 ID를 사용합니다.
         name: item.placeName,
         category: item.category.toLowerCase(),
         address: `${item.city} ${item.detailAddress}`,
@@ -131,6 +131,10 @@ const HomePage = () => {
         longitude: item.longitude,
       }));
       setBookmarkedPlaces(processedData);
+
+      // 북마크된 아이템들의 ID를 bookmarks 상태에 추가합니다.
+      const newBookmarks = new Set(processedData.map((item) => item.id));
+      setBookmarks(newBookmarks);
     } catch (error) {
       console.error("Error fetching bookmarked places:", error);
     }
