@@ -114,6 +114,36 @@ const HomePage = () => {
     changePage: changeCategoryPage,
   } = usePagination(storeDataByCategory[activeCategory] || [], ITEMS_PER_PAGE);
 
+  // bookmark
+  const [bookmarkedPlaces, setBookmarkedPlaces] = useState([]);
+
+  const fetchBookmarkedPlaces = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/place/bookmark/${userId}`
+      );
+      const processedData = response.data.map((item, index) => ({
+        id: `bookmark-id-${index}`,
+        name: item.placeName,
+        category: item.category.toLowerCase(),
+        address: `${item.city} ${item.detailAddress}`,
+        latitude: item.latitude,
+        longitude: item.longitude,
+      }));
+      setBookmarkedPlaces(processedData);
+    } catch (error) {
+      console.error("Error fetching bookmarked places:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "즐겨찾기") {
+      // 사용자 ID
+      const userId = 2;
+      fetchBookmarkedPlaces(userId);
+    }
+  }, [activeTab]);
+
   return (
     <PageContainer>
       <BackButton />
@@ -209,7 +239,25 @@ const HomePage = () => {
             />
           </>
         )}
-        {activeTab === "즐겨찾기" && <div>즐겨찾기별 컨텐츠...</div>}
+        {activeTab === "즐겨찾기" && (
+          <div>
+            <StoreList>
+              {bookmarkedPlaces.map((place, index) => (
+                <StoreItem
+                  key={index}
+                  id={place.id}
+                  name={place.name}
+                  category={place.category}
+                  address={place.address}
+                  latitude={place.latitude}
+                  longitude={place.longitude}
+                  onBookmarkToggle={handleBookmarkToggle}
+                  isBookmarked={bookmarks.has(place.id)}
+                />
+              ))}
+            </StoreList>
+          </div>
+        )}
       </ContentContainer>
     </PageContainer>
   );
