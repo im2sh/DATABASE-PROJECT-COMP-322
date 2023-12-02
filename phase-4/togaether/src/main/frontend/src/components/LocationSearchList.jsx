@@ -41,7 +41,7 @@ export const LocationSearchButton = styled.button`
 
   padding: 0.44rem 2.19rem 0.25rem 2.75rem;
 
-  background-color: #efe6fd;
+  background-color: var(--gray_01);
 
   .PlaceName {
     color: #6c6c6c;
@@ -62,12 +62,18 @@ export const LocationSearchButton = styled.button`
   letter-spacing: -0.0156rem;
 `;
 const LocationSearchList = () => {
-  const { keywordSearchData } = useKeywordSearchStore();
+  // const { keywordSearchData } = useKeywordSearchStore();
   return (
     <LocationSearchListDiv>
-      {keywordSearchData?.documents.map((item, index) => {
+      {/* {keywordSearchData?.documents.map((item, index) => {
         return <Item key={index} item={item} />;
-      })}
+      })} */}
+      <Item
+        item={{
+          place_name: "장소명장소명",
+          address_name: "주소명주소명",
+        }}
+      />
     </LocationSearchListDiv>
   );
 };
@@ -80,11 +86,9 @@ const Item = ({ item }) => {
     setLocationData({
       place_name: item.place_name,
       address_name: item.address_name,
-      x: Number(item.x),
-      y: Number(item.y),
     });
 
-    navigate("/addpost");
+    navigate("/writeDiary");
   };
 
   return (

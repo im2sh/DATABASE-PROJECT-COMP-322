@@ -21,6 +21,8 @@ import createDiary from "../../api/createDiary";
 import { BiCheck } from "react-icons/bi";
 import BackButton from "../../components/BackButton";
 import styled from "styled-components";
+import usePostStore from "../../store/usePostStore";
+import { useNavigate } from "react-router-dom";
 
 const AppBar = ({ onCheck }) => {
   return (
@@ -60,6 +62,8 @@ const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState("");
   const [emotion, setEmotion] = useState("행복해요"); // Default emotion or could be ''
   const [pet, setPet] = useState(""); // Default pet
+  const { locationData } = usePostStore();
+  const navigate = useNavigate();
 
   // Emotion images mapping
   const emotionImages = {
@@ -86,9 +90,12 @@ const WriteDiaryPage = () => {
   const handleCheck = async () => {
     // 체크 로직, 예를 들면 폼 데이터를 처리하는 부분
     const payload = {
+      place_id: locationData.place_id,
+      place_name: locationData.place_name,
+      address_name: locationData.address_name,
       emotion,
-      pet,
-      diaryText,
+      pet_name: pet,
+      content: diaryText,
     };
 
     const response = await createDiary(payload); // api call example

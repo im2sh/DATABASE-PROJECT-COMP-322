@@ -78,8 +78,7 @@ const LocationInput = () => {
     <LocationInputWrapDiv>
       <label className="LocationLabel">
         <div>
-          <span>어디를</span> <span>다녀오셨나요?</span>
-          <img src="/Sori.png" alt="Sori" />
+          <span>어디를</span> <span>다녀오셨나요? 🐶</span>
         </div>
         <SearchIcon />
         <input

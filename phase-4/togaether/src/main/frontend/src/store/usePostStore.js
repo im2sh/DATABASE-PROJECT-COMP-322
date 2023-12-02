@@ -1,34 +1,19 @@
 import { create } from "zustand";
 
 const usePostStore = create((set) => ({
-  imageUrl: "",
-  setImageUrl: (value) =>
-    set((state) => ({
-      ...state,
-      imageUrl: value,
-    })),
-  imageFile: null,
-  setImageFile: (value) =>
-    set((state) => ({
-      ...state,
-      imageFile: value,
-    })),
-  date: "",
-  setDate: (value) =>
-    set((state) => ({
-      ...state,
-      date: value,
-    })),
+  locationData: {
+    place_id: "",
+    place_name: "",
+    address_name: "",
+  },
   setLocationData: (value) =>
     set((state) => ({
       ...state,
-      locationData: value,
-    })),
-  content: "",
-  setContent: (value) =>
-    set((state) => ({
-      ...state,
-      content: value,
+      locationData: {
+        place_id: value.place_id,
+        place_name: value.place_name,
+        address_name: value.address_name,
+      },
     })),
 }));
 
