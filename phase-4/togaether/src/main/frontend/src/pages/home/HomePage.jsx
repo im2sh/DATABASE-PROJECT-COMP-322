@@ -16,21 +16,35 @@ const HomePage = () => {
   const activeIndex = tabTitles.indexOf(activeTab);
   const [bookmarks, setBookmarks] = useState(new Set());
 
-  const handleBookmarkToggle = (id) => {
-    setBookmarks((prevBookmarks) => {
-      const updatedBookmarks = new Set(prevBookmarks);
-      console.log("현재 북마크 상태:", Array.from(updatedBookmarks));
-      console.log("토글되는 아이템 ID:", id);
+  const handleBookmarkToggle = async (id, placeId) => {
+    const userId = localStorage.getItem("userId"); // 사용자 ID
 
-      if (updatedBookmarks.has(id)) {
-        updatedBookmarks.delete(id);
+    if (!userId) {
+      console.error("사용자 ID가 없습니다.");
+      return;
+    }
+
+    try {
+      if (bookmarks.has(id)) {
+        // 북마크 삭제
+        await axios.post(`/api/place/bookmark/${userId}/${placeId}`);
+        setBookmarks((prevBookmarks) => {
+          const updatedBookmarks = new Set(prevBookmarks);
+          updatedBookmarks.delete(id);
+          return updatedBookmarks;
+        });
       } else {
-        updatedBookmarks.add(id);
+        // 북마크 추가
+        await axios.post(`/api/place/bookmark/${userId}/${placeId}`);
+        setBookmarks((prevBookmarks) => {
+          const updatedBookmarks = new Set(prevBookmarks);
+          updatedBookmarks.add(id);
+          return updatedBookmarks;
+        });
       }
-
-      console.log("업데이트 후 북마크 상태:", Array.from(updatedBookmarks));
-      return updatedBookmarks;
-    });
+    } catch (error) {
+      console.error("북마크 변경 중 오류가 발생했습니다:", error);
+    }
   };
 
   // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
@@ -72,6 +86,7 @@ const HomePage = () => {
       storeDataByCity[cityName].push({
         id: itemId,
         name: item.placeName,
+        placeId: item.placeId,
         category: item.category.toLowerCase(),
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
@@ -97,11 +112,13 @@ const HomePage = () => {
       acc[category].push({
         id: item.id, // 또는 고유 ID 생성
         name: item.placeName,
+        placeId: item.placeId,
         category: item.category.toLowerCase(),
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
         longitude: item.longitude,
       });
+
       return acc;
     }, {});
     return categoryData;
@@ -125,6 +142,7 @@ const HomePage = () => {
       const processedData = response.data.map((item, index) => ({
         id: `bookmark-id-${index}`, // 이렇게 ID를 생성하거나 실제 ID를 사용합니다.
         name: item.placeName,
+        placeId: item.placeId,
         category: item.category.toLowerCase(),
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
@@ -141,12 +159,10 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    if (activeTab === "즐겨찾기") {
-      // 로컬 스토리지에서 userId 가져오기
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        fetchBookmarkedPlaces(userId);
-      }
+    // 로컬 스토리지에서 userId 가져오기
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      fetchBookmarkedPlaces(userId);
     }
   }, [activeTab]);
 
@@ -192,8 +208,11 @@ const HomePage = () => {
                     <StoreItem
                       key={index}
                       id={item.id} // id 값 고유
+                      placeId={item.placeId}
                       {...item}
-                      onBookmarkToggle={handleBookmarkToggle}
+                      onBookmarkToggle={() =>
+                        handleBookmarkToggle(item.id, item.placeId)
+                      }
                       isBookmarked={bookmarks.has(item.id)}
                     />
                   ))}
@@ -230,8 +249,11 @@ const HomePage = () => {
                 <StoreItem
                   key={index}
                   id={item.id}
+                  placeId={item.placeId}
                   {...item}
-                  onBookmarkToggle={handleBookmarkToggle}
+                  onBookmarkToggle={() =>
+                    handleBookmarkToggle(item.id, item.placeId)
+                  }
                   isBookmarked={bookmarks.has(item.id)}
                 />
               ))}
@@ -252,12 +274,11 @@ const HomePage = () => {
                 <StoreItem
                   key={index}
                   id={place.id}
-                  name={place.name}
-                  category={place.category}
-                  address={place.address}
-                  latitude={place.latitude}
-                  longitude={place.longitude}
-                  onBookmarkToggle={handleBookmarkToggle}
+                  placeId={place.placeId}
+                  {...place}
+                  onBookmarkToggle={() =>
+                    handleBookmarkToggle(place.id, place.placeId)
+                  }
                   isBookmarked={bookmarks.has(place.id)}
                 />
               ))}
