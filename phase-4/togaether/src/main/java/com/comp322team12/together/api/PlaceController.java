@@ -31,6 +31,24 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @Operation(
+            summary = "장소 검색",
+            description = "장소를 검색합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "장소 검색에 성공하였습니다."
+    )
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> loadPlaceBySearch(@PathVariable String keyword) {
+        try {
+            List<PlaceResponse> placeResponse = placeService.findPlaceByKeyword(keyword);
+            return ResponseEntity.ok().body(placeResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @Operation(
             summary = "모든 장소 조회",
             description = "모든 장소를 조회합니다."
     )
