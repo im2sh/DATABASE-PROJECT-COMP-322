@@ -4,9 +4,8 @@ import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ChangePasswordPage from "./pages/changePassword/ChangePasswordPage";
-import WriteDiaryPage from './pages/writediary/WriteDiaryPage';
-
-
+import WriteDiaryPage from "./pages/writediary/WriteDiaryPage";
+import DiaryFeedPage from "./pages/diaryFeed/DiaryFeedPage";
 
 const App = () => {
   return (
@@ -21,8 +20,8 @@ const App = () => {
             path="/changePassword"
             element={<ChangePasswordPage />}
           ></Route>
-          <Route path="/writeDiary" 
-          element={<WriteDiaryPage />} />
+          <Route path="/writeDiary" element={<WriteDiaryPage />} />
+          <Route path="/diary" element={<DiaryFeedPage />} />
         </Routes>
       </Router>
     </>
