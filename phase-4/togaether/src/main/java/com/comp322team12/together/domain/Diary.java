@@ -12,9 +12,11 @@ import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Diary {
     @Id
@@ -52,4 +54,5 @@ public class Diary {
     public Long getId() {
         return id;
     }
+
 }
