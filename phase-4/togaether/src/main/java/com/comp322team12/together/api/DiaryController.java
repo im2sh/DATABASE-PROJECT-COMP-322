@@ -63,6 +63,14 @@ public class DiaryController {
         }
     }
 
+    @Operation(
+            summary = "다이어리 조회",
+            description = "다이어리를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "다이어리 조회에 성공하였습니다."
+    )
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserDiary(@PathVariable Long userId) {
         try {
@@ -72,7 +80,14 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         }
     }
-
+    @Operation(
+            summary = "장소별 다이어리 조회",
+            description = "장소별 다이어리를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "장소별 다이어리 조회에 성공하였습니다."
+    )
     @GetMapping("/place/{placeId}")
     public ResponseEntity<?> getPlaceDiary(@PathVariable Long placeId) {
         try {
