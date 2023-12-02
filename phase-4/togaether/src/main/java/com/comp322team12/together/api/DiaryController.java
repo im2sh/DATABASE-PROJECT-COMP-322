@@ -2,6 +2,7 @@ package com.comp322team12.together.api;
 
 import com.comp322team12.together.dto.request.diary.DiaryCreateRequest;
 import com.comp322team12.together.dto.response.common.ResponseDto;
+import com.comp322team12.together.dto.response.diary.DiaryResponse;
 import com.comp322team12.together.dto.response.pet.PetResponse;
 import com.comp322team12.together.exception.place.InvalidPlaceException;
 import com.comp322team12.together.exception.user.InvalidUserException;
@@ -57,6 +58,16 @@ public class DiaryController {
             return ResponseEntity.ok().body(new ResponseDto("다이어리 생성에 성공하였습니다."));
         } catch (InvalidPlaceException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        } catch (InvalidUserException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/all/{userId}")
+    public ResponseEntity<?> getUserDiary(@PathVariable Long userId) {
+        try {
+            List<DiaryResponse> diaryInfo = diaryService.getUserDiary(userId);
+            return ResponseEntity.ok().body(diaryInfo);
         } catch (InvalidUserException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         }

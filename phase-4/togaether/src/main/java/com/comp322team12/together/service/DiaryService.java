@@ -4,6 +4,7 @@ import com.comp322team12.together.domain.Diary;
 import com.comp322team12.together.domain.Place;
 import com.comp322team12.together.domain.User.User;
 import com.comp322team12.together.dto.request.diary.DiaryCreateRequest;
+import com.comp322team12.together.dto.response.diary.DiaryResponse;
 import com.comp322team12.together.exception.place.InvalidPlaceException;
 import com.comp322team12.together.exception.user.InvalidUserException;
 import com.comp322team12.together.repository.DiaryRepository;
@@ -11,6 +12,8 @@ import com.comp322team12.together.repository.PetRepository;
 import com.comp322team12.together.repository.PlaceRepository;
 import com.comp322team12.together.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +36,17 @@ public class DiaryService {
 
         user.addDiary(diary);
         place.addDiary(diary);
+    }
+
+    public List<DiaryResponse> getUserDiary(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidUserException("존재하지 않는 유저입니다."));
+        List<Diary> diaries = diaryRepository.findAllDiaryByUser(user);
+        List<DiaryResponse> diaryResponses = new ArrayList<>();
+        for (Diary diary : diaries) {
+            DiaryResponse diaryResponse = new DiaryResponse(diary.getContent(), diary.getEmotion(),
+                    diary.getCreatedDate(), diary.getUser(), diary.getPlace());
+            diaryResponses.add(diaryResponse);
+        }
+        return diaryResponses;
     }
 }
