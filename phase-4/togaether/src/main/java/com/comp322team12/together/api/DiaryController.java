@@ -31,7 +31,7 @@ public class DiaryController {
     private final DiaryService diaryService;
     private final UserService userService;
     @GetMapping("/create/{userId}/{placeId}")
-public ResponseEntity<?> loadUserPet(@PathVariable Long userId, @PathVariable Long placeId) {
+    public ResponseEntity<?> loadUserPet(@PathVariable Long userId, @PathVariable Long placeId) {
         try {
             List<PetResponse> petInfo = userService.getPetInfo(userId);
             return ResponseEntity.ok().body(petInfo);
