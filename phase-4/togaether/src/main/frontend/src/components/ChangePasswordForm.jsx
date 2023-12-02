@@ -1,23 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { FiLock } from "react-icons/fi";
 
-const ChangePasswordForm = ({ onConfirm, email, setEmail, loading }) => {
-  const [password, setPassword] = useState("");
-  const [showPasswordInput, setShowPasswordInput] = useState(false);
-
-  const handleConfirmClick = (event) => {
-    event.preventDefault();
-    if (!showPasswordInput) {
-      setShowPasswordInput(true);
-    } else {
-      onConfirm(password);
-    }
-  };
-
+const ChangePasswordForm = ({
+  onConfirm,
+  email,
+  setEmail,
+  currentPassword,
+  setCurrentPassword,
+  newPassword,
+  setNewPassword,
+  confirmNewPassword,
+  setConfirmNewPassword,
+  loading,
+}) => {
   return (
-    <Form onSubmit={handleConfirmClick}>
+    <Form onSubmit={onConfirm}>
       <InputContainer>
         <label htmlFor="email">Email</label>
         <InputWithIcon>
@@ -32,28 +31,50 @@ const ChangePasswordForm = ({ onConfirm, email, setEmail, loading }) => {
           />
         </InputWithIcon>
       </InputContainer>
-      {showPasswordInput && (
-        <InputContainer>
-          <label htmlFor="password">Enter new Password</label>
-          <InputWithIcon>
-            <FiLock className="icon" size="1.5em" />
-            <input
-              type="password"
-              id="password"
-              placeholder="Input your new password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </InputWithIcon>
-        </InputContainer>
-      )}
+      <InputContainer>
+        <label htmlFor="currentPassword">Current Password</label>
+        <InputWithIcon>
+          <FiLock className="icon" size="1.5em" />
+          <input
+            type="password"
+            id="currentPassword"
+            placeholder="Current password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            required
+          />
+        </InputWithIcon>
+      </InputContainer>
+      <InputContainer>
+        <label htmlFor="newPassword">New Password</label>
+        <InputWithIcon>
+          <FiLock className="icon" size="1.5em" />
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+        </InputWithIcon>
+      </InputContainer>
+      <InputContainer>
+        <label htmlFor="confirmNewPassword">Confirm New Password</label>
+        <InputWithIcon>
+          <FiLock className="icon" size="1.5em" />
+          <input
+            type="password"
+            id="confirmNewPassword"
+            placeholder="Confirm new password"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+            required
+          />
+        </InputWithIcon>
+      </InputContainer>
       <ConfirmButton type="submit">
-        {loading
-          ? "Loading..."
-          : showPasswordInput
-          ? "변경 완료"
-          : "이 이메일로 비밀번호 변경하기"}
+        {loading ? "Loading..." : "비밀번호 변경하기"}
       </ConfirmButton>
     </Form>
   );

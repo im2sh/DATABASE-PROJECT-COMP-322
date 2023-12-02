@@ -6,6 +6,9 @@ import BackButton from "../../components/BackButton";
 
 const ChangePasswordPage = () => {
   const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,10 +17,21 @@ const ChangePasswordPage = () => {
     setLoading(true);
     setError("");
 
-    try {
-      const response = await axios.post("/api/changePassword", { email });
-      localStorage.setItem("token", response.data.token);
+    // Add validation for new passwords match
+    if (newPassword !== confirmNewPassword) {
+      setError("New passwords do not match.");
       setLoading(false);
+      return;
+    }
+
+    try {
+      await axios.post(`/api/user/modifyPw`, {
+        email,
+        currentPassword,
+        newPassword,
+      });
+      setLoading(false);
+      // Handle successful password change
     } catch (err) {
       setLoading(false);
       setError(
@@ -37,6 +51,12 @@ const ChangePasswordPage = () => {
           onConfirm={handleConfirm}
           email={email}
           setEmail={setEmail}
+          currentPassword={currentPassword}
+          setCurrentPassword={setCurrentPassword}
+          newPassword={newPassword}
+          setNewPassword={setNewPassword}
+          confirmNewPassword={confirmNewPassword}
+          setConfirmNewPassword={setConfirmNewPassword}
           loading={loading}
         />
         {error && <p>{error}</p>}
