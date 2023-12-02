@@ -41,6 +41,15 @@ public class DiaryService {
     public List<DiaryResponse> getUserDiary(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new InvalidUserException("존재하지 않는 유저입니다."));
         List<Diary> diaries = diaryRepository.findAllDiaryByUser(user);
+        return getDiaryResponses(diaries);
+    }
+
+    public List<DiaryResponse> getPlaceByDiary(Long placeId) {
+        List<Diary> diaries = diaryRepository.findAllDiaryByPlaceId(placeId);
+        return getDiaryResponses(diaries);
+    }
+
+    private List<DiaryResponse> getDiaryResponses(List<Diary> diaries) {
         List<DiaryResponse> diaryResponses = new ArrayList<>();
         for (Diary diary : diaries) {
             DiaryResponse diaryResponse = new DiaryResponse(diary.getContent(), diary.getEmotion(),

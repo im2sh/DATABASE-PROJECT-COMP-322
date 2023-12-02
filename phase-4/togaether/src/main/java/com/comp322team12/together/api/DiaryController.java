@@ -63,12 +63,22 @@ public class DiaryController {
         }
     }
 
-    @GetMapping("/all/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserDiary(@PathVariable Long userId) {
         try {
             List<DiaryResponse> diaryInfo = diaryService.getUserDiary(userId);
             return ResponseEntity.ok().body(diaryInfo);
         } catch (InvalidUserException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<?> getPlaceDiary(@PathVariable Long placeId) {
+        try {
+            List<DiaryResponse> diaryInfo = diaryService.getPlaceByDiary(placeId);
+            return ResponseEntity.ok().body(diaryInfo);
+        } catch (InvalidPlaceException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         }
     }
