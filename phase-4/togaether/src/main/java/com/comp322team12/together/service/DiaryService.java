@@ -10,6 +10,8 @@ import com.comp322team12.together.repository.DiaryRepository;
 import com.comp322team12.together.repository.PlaceRepository;
 import com.comp322team12.together.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
