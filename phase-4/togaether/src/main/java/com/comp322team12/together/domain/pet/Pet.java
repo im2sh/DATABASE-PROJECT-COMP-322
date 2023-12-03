@@ -30,7 +30,7 @@ public class Pet {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USERS_ID")
     private User user;
 

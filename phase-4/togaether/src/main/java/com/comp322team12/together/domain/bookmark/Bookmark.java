@@ -23,11 +23,11 @@ public class Bookmark {
     @Column(name = "STATUS", nullable = false)
     private Integer status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USERS_ID", insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PLACE_ID", insertable = false, updatable = false)
     private Place place;
 

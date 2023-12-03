@@ -35,11 +35,11 @@ public class Diary {
     @Column(name = "CREATED_DATE", nullable = false)
     private LocalDateTime createdDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USERS_ID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PLACE_ID")
     private Place place;
 
