@@ -64,19 +64,12 @@ export const LocationSearchButton = styled.button`
 const LocationSearchList = () => {
   // 받아온 장소 리스트 데이터를 그려내는 컴포넌트
   // 아래 줄에서 데이터 꺼내옴
-  // const { keywordSearchData } = useKeywordSearchStore();
+  const { keywordSearchData } = useKeywordSearchStore();
   return (
     <LocationSearchListDiv>
-      {/* {keywordSearchData?.documents.map((item, index) => {
-        return <Item key={index} item={item} />;
-      })} */}
-      <Item
-        item={{
-          place_id: "0",
-          place_name: "장소명장소명",
-          address_name: "주소명주소명",
-        }}
-      />
+      {keywordSearchData?.map((item) => {
+        return <Item key={item.placeId} item={item} />;
+      })}
     </LocationSearchListDiv>
   );
 };
@@ -87,8 +80,9 @@ const Item = ({ item }) => {
 
   const onClick = () => {
     setLocationData({
-      place_name: item.place_name,
-      address_name: item.address_name,
+      placeId: item.placeId,
+      placeName: item.placeName,
+      detailAddress: item.detailAddress,
     });
 
     navigate("/writeDiary");
@@ -98,8 +92,8 @@ const Item = ({ item }) => {
     <LocationSearchButtonWrapDiv>
       <SearchIconGray />
       <LocationSearchButton onClick={onClick}>
-        <span className="PlaceName">{item.place_name}</span>
-        {item.address_name}
+        <span className="PlaceName">{item.placeName}</span>
+        {item.detailAddress}
       </LocationSearchButton>
     </LocationSearchButtonWrapDiv>
   );

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useKeywordSearchStore from "../store/useKeywordSearchStore";
 import SearchIcon from "../icons/SearchIcon";
 import styled from "styled-components";
+import getPlaceData from "../api/getPlaceData";
 
 const LocationInputWrapDiv = styled.div`
   margin-top: 3.75rem;
@@ -70,9 +71,9 @@ const LocationInput = () => {
       return;
     }
     // 검색어에 따른 장소 리스트 조회 API 호출 지점
-    // const result = await getPlaceData(e.target.value);
+    const result = await getPlaceData(e.target.value);
 
-    // setKeywordSearchData(result.data);
+    setKeywordSearchData(result?.data);
   };
 
   return (
