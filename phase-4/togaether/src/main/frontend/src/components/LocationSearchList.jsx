@@ -62,6 +62,8 @@ export const LocationSearchButton = styled.button`
   letter-spacing: -0.0156rem;
 `;
 const LocationSearchList = () => {
+  // 받아온 장소 리스트 데이터를 그려내는 컴포넌트
+  // 아래 줄에서 데이터 꺼내옴
   // const { keywordSearchData } = useKeywordSearchStore();
   return (
     <LocationSearchListDiv>
@@ -70,6 +72,7 @@ const LocationSearchList = () => {
       })} */}
       <Item
         item={{
+          place_id: "0",
           place_name: "장소명장소명",
           address_name: "주소명주소명",
         }}

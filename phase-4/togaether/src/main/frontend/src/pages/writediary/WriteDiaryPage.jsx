@@ -10,6 +10,7 @@ import {
   Box,
   Flex,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import happyImage from "../../image/text=happy, size=L.png";
 import excitedImage from "../../image/text=excited, size=L.png";
@@ -64,6 +65,7 @@ const WriteDiaryPage = () => {
   const [pet, setPet] = useState(""); // Default pet
   const { locationData } = usePostStore();
   const navigate = useNavigate();
+  //주인이 가진 pet_name 리스트를 API로부터 데이터 받아올 예정
 
   // Emotion images mapping
   const emotionImages = {
@@ -91,10 +93,7 @@ const WriteDiaryPage = () => {
     // 체크 로직, 예를 들면 폼 데이터를 처리하는 부분
     const payload = {
       place_id: locationData.place_id,
-      place_name: locationData.place_name,
-      address_name: locationData.address_name,
       emotion,
-      pet_name: pet,
       content: diaryText,
     };
 
@@ -158,20 +157,15 @@ const WriteDiaryPage = () => {
 
         {/* Pet Dropdown */}
         <FormControl className="Pet__Dropdown">
-          <Select
-            value={pet}
-            onChange={(e) => setPet(e.target.value)}
-            placeholder="함께할 반려견을 선택해주세요"
+          <Text
+            display="flex"
+            justifyContent="center"
             backgroundColor="var(--gray_01)"
             color="var(--primary_200)"
-            focusBorderColor="#CE7149"
           >
-            {pets.map((pet) => (
-              <option value={pet} key={pet}>
-                {pet}
-              </option>
-            ))}
-          </Select>
+            {pets.join(", ")}&nbsp;
+            <Text color="var(--primary_100)">과 함께</Text>
+          </Text>
         </FormControl>
 
         {/* Textarea for diary entry */}

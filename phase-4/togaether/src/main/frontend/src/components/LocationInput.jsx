@@ -69,7 +69,8 @@ const LocationInput = () => {
       setKeywordSearchData(undefined);
       return;
     }
-    // const result = await kakaoReq.localKeywordSearch(e.target.value);
+    // 검색어에 따른 장소 리스트 조회 API 호출 지점
+    // const result = await getPlaceData(e.target.value);
 
     // setKeywordSearchData(result.data);
   };
