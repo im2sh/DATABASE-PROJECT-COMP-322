@@ -24,6 +24,8 @@ import BackButton from "../../components/BackButton";
 import styled from "styled-components";
 import usePostStore from "../../store/usePostStore";
 import { useNavigate } from "react-router-dom";
+import WithPets from "../../components/WithPets";
+import usePetDataStore from "../../store/usePetDataStore";
 
 const AppBar = ({ onCheck }) => {
   return (
@@ -62,10 +64,9 @@ const WriteDiaryContainer = styled(Container)`
 const WriteDiaryPage = () => {
   const [diaryText, setDiaryText] = useState("");
   const [emotion, setEmotion] = useState("행복해요"); // Default emotion or could be ''
-  const [pet, setPet] = useState(""); // Default pet
   const { locationData } = usePostStore();
+  const { petName } = usePetDataStore();
   const navigate = useNavigate();
-  //주인이 가진 pet_name 리스트를 API로부터 데이터 받아올 예정
 
   // Emotion images mapping
   const emotionImages = {
@@ -75,31 +76,30 @@ const WriteDiaryPage = () => {
     뿌듯해요: proudImage,
     상쾌해요: refreshImage,
     피곤해요: tiredImage,
+    나른해요: tiredImage,
+    희망적이에요: happyImage,
+    안심돼요: happyImage,
+    안정돼요: happyImage,
+    기쁘네요: happyImage,
+    우울해요: tiredImage,
+    불안해요: tiredImage,
+    짜증나요: tiredImage,
+    무기력해요: tiredImage,
   };
-
-  // Emotion dropdown options
-  const emotions = [
-    { value: "행복해요", label: "행복해요" },
-    { value: "신나요", label: "신나요" },
-    { value: "뿌듯해요", label: "뿌듯해요" },
-    { value: "상쾌해요", label: "상쾌해요" },
-    { value: "설레요", label: "설레요" },
-    { value: "피곤해요", label: "피곤해요" },
-  ];
-
-  const pets = ["반려견1", "반려견2", "반려견3"]; // Replace with actual pet names
 
   const handleCheck = async () => {
     // 체크 로직, 예를 들면 폼 데이터를 처리하는 부분
     const payload = {
-      place_id: locationData.place_id,
+      placeId: locationData.placeId,
+      petName,
       emotion,
       content: diaryText,
     };
 
     const response = await createDiary(payload); // api call example
-
     console.log(response);
+
+    navigate("/diary");
   };
 
   return (
@@ -146,9 +146,9 @@ const WriteDiaryPage = () => {
               color="var(--primary_100)"
               focusBorderColor="#FF875A"
             >
-              {emotions.map((emotionOption) => (
-                <option value={emotionOption.value} key={emotionOption.value}>
-                  {emotionOption.label}
+              {Object.keys(emotionImages).map((emotion) => (
+                <option value={emotion} key={emotion}>
+                  {emotion}
                 </option>
               ))}
             </Select>
@@ -156,17 +156,7 @@ const WriteDiaryPage = () => {
         </FormControl>
 
         {/* Pet Dropdown */}
-        <FormControl className="Pet__Dropdown">
-          <Text
-            display="flex"
-            justifyContent="center"
-            backgroundColor="var(--gray_01)"
-            color="var(--primary_200)"
-          >
-            {pets.join(", ")}&nbsp;
-            <Text color="var(--primary_100)">과 함께</Text>
-          </Text>
-        </FormControl>
+        <WithPets placeId={locationData.placeId} />
 
         {/* Textarea for diary entry */}
         <FormControl>
