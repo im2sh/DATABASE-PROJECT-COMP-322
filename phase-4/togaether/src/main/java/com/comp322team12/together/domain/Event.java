@@ -32,7 +32,7 @@ public class Event {
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
 

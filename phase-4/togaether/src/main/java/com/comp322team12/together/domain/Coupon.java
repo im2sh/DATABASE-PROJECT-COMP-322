@@ -41,7 +41,7 @@ public class Coupon {
     @Column(name = "MAXIMUM", nullable = false)
     private Integer maximum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USERS_ID")
     private User user;
 

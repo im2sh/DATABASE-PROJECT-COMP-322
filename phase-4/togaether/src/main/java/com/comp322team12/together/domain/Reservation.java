@@ -28,11 +28,11 @@ public class Reservation {
     @Column(name = "PRICE")
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "USERS_ID", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PLACE_ID")
     private Place place;
 
