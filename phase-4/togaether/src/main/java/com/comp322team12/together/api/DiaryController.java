@@ -1,17 +1,23 @@
 package com.comp322team12.together.api;
 
+import com.comp322team12.together.domain.Place;
 import com.comp322team12.together.dto.request.diary.DiaryCreateRequest;
 import com.comp322team12.together.dto.response.common.ResponseDto;
+import com.comp322team12.together.dto.response.diary.DiaryResponse;
+import com.comp322team12.together.dto.response.pet.PetResponse;
 import com.comp322team12.together.exception.place.InvalidPlaceException;
 import com.comp322team12.together.exception.user.InvalidUserException;
 import com.comp322team12.together.service.DiaryService;
+import com.comp322team12.together.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +31,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/diary", produces = "application/json; charset=UTF-8")
 public class DiaryController {
     private final DiaryService diaryService;
+    private final UserService userService;
+    @GetMapping("/create/{userId}/{placeId}")
+    public ResponseEntity<?> loadUserPet(@PathVariable Long userId, @PathVariable Long placeId) {
+        try {
+            List<PetResponse> petInfo = userService.getPetInfo(userId);
+            return ResponseEntity.ok().body(petInfo);
+        } catch (InvalidPlaceException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        } catch (InvalidUserException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        }
+    }
 
     @Operation(
             summary = "다이어리 생성",
@@ -45,4 +63,43 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
         }
     }
+
+    @Operation(
+            summary = "다이어리 조회",
+            description = "다이어리를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "다이어리 조회에 성공하였습니다."
+    )
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserDiary(@PathVariable Long userId) {
+        try {
+            List<DiaryResponse> diaryInfo = diaryService.getUserDiary(userId);
+            for (DiaryResponse diaryResponse : diaryInfo) {
+                Place place = diaryResponse.place();
+            }
+            return ResponseEntity.ok().body(diaryInfo);
+        } catch (InvalidUserException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        }
+    }
+    @Operation(
+            summary = "장소별 다이어리 조회",
+            description = "장소별 다이어리를 조회합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "장소별 다이어리 조회에 성공하였습니다."
+    )
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<?> getPlaceDiary(@PathVariable Long placeId) {
+        try {
+            List<DiaryResponse> diaryInfo = diaryService.getPlaceByDiary(placeId);
+            return ResponseEntity.ok().body(diaryInfo);
+        } catch (InvalidPlaceException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
+        }
+    }
+
 }

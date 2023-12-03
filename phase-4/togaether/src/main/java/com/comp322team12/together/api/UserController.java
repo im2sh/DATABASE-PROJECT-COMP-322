@@ -103,11 +103,10 @@ public class UserController {
             responseCode = "200",
             description = "비밀번호 변경에 성공하였습니다."
     )
-    @PostMapping("/modifyPw/{userId}")
-    public ResponseEntity<ResponseDto> modifyUserPw(@PathVariable("userId") Long userId,
-                                                    @RequestBody UserPwModificationRequest request) {
+    @PostMapping("/modifyPw")
+    public ResponseEntity<ResponseDto> modifyUserPw(@RequestBody UserPwModificationRequest request) {
         try {
-            userService.modifyUserPw(userId, request);
+            userService.modifyUserPw(request);
             return ResponseEntity.ok().body(new ResponseDto("비밀번호가 변경되었습니다."));
         } catch (IncorrectPassword e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));

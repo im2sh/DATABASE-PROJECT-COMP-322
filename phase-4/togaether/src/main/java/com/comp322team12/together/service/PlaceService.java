@@ -118,4 +118,16 @@ public class PlaceService {
             bookmark.changeStatus();
         }
     }
+
+    public List<PlaceResponse> findPlaceByKeyword(String placeName) {
+        List<Place> places = placeRepository.findByPlaceNameContaining(placeName);
+        if(places.isEmpty()) {
+            throw new InvalidPlaceException("존재하지 않는 장소입니다.");
+        }
+        List<PlaceResponse> placeResponses = new ArrayList<>();
+        for (Place place : places) {
+            placeResponses.add(place.toResponse());
+        }
+        return placeResponses;
+    }
 }
