@@ -6,6 +6,7 @@ import SignupPage from "./pages/signup/SignupPage";
 import ChangePasswordPage from "./pages/changePassword/ChangePasswordPage";
 import WriteDiaryPage from "./pages/writediary/WriteDiaryPage";
 import DiaryFeedPage from "./pages/diaryFeed/DiaryFeedPage";
+import SearchPage from "./pages/search/SearchPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           ></Route>
           <Route path="/writeDiary" element={<WriteDiaryPage />} />
           <Route path="/diary" element={<DiaryFeedPage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Router>
     </>
