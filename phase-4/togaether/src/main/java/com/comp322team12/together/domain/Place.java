@@ -91,4 +91,28 @@ public class Place {
     public Long getId() {
         return id;
     }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
 }

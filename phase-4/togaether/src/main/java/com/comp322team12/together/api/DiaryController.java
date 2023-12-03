@@ -1,5 +1,6 @@
 package com.comp322team12.together.api;
 
+import com.comp322team12.together.domain.Place;
 import com.comp322team12.together.dto.request.diary.DiaryCreateRequest;
 import com.comp322team12.together.dto.response.common.ResponseDto;
 import com.comp322team12.together.dto.response.diary.DiaryResponse;
@@ -75,6 +76,9 @@ public class DiaryController {
     public ResponseEntity<?> getUserDiary(@PathVariable Long userId) {
         try {
             List<DiaryResponse> diaryInfo = diaryService.getUserDiary(userId);
+            for (DiaryResponse diaryResponse : diaryInfo) {
+                Place place = diaryResponse.place();
+            }
             return ResponseEntity.ok().body(diaryInfo);
         } catch (InvalidUserException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(e.getMessage()));
