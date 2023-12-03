@@ -28,7 +28,9 @@ const DiaryEntry = ({ content, createdDate, place, user, emotion }) => {
     무기력해요: tiredImage,
   };
 
-  const placeName = place ? `장소 ID: ${place.placeId}` : "장소 정보 없음";
+  const placeName = place
+    ? `${place.city} ${place.detailAddress}`
+    : "장소 정보 없음";
   const formatDate = (dateArray) => {
     const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
     return date.toISOString().split("T")[0]; // 'YYYY-MM-DD' 형식
@@ -161,6 +163,10 @@ const Dates = styled.time`
 const Place = styled.span`
   font-size: 0.875rem;
   color: #999;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const Emotion = styled.div`
