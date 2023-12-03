@@ -9,6 +9,7 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -24,10 +25,11 @@ const SignupPage = () => {
     setError("");
 
     try {
-      const response = await axios.post("/api/signup", {
+      const response = await axios.post("/api/user/signup", {
         email,
-        name,
+        userName: name,
         password,
+        phoneNumber, // API 호출 시 phoneNumber도 포함
       });
       setLoading(false);
       navigate("/login");
@@ -57,6 +59,8 @@ const SignupPage = () => {
         name={name}
         setName={setName}
         password={password}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
         setPassword={setPassword}
         handleSignUp={handleSignUp}
         loading={loading}

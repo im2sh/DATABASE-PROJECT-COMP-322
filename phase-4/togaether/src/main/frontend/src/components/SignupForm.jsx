@@ -1,7 +1,11 @@
 // SignupForm.jsx
 import React from "react";
 import styled from "styled-components";
-import { MdOutlineAlternateEmail, MdPersonOutline } from "react-icons/md";
+import {
+  MdOutlineAlternateEmail,
+  MdPersonOutline,
+  MdPhone,
+} from "react-icons/md";
 import { FiLock } from "react-icons/fi";
 
 const SignupForm = ({
@@ -11,6 +15,8 @@ const SignupForm = ({
   setName,
   password,
   setPassword,
+  phoneNumber,
+  setPhoneNumber,
   handleSignUp,
   loading,
 }) => (
@@ -39,6 +45,20 @@ const SignupForm = ({
           placeholder="Gildong Hong"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </InputWithIcon>
+    </InputContainer>
+    <InputContainer>
+      <label htmlFor="phone-number">Phone Number</label>
+      <InputWithIcon>
+        <MdPhone className="icon" size="1.5em" />
+        <input
+          type="text"
+          id="phone-number"
+          placeholder="012-345-6789"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
           required
         />
       </InputWithIcon>
