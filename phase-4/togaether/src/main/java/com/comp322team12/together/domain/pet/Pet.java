@@ -1,27 +1,36 @@
 package com.comp322team12.together.domain.pet;
 
 import com.comp322team12.together.domain.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "PET")
 public class Pet {
-    @EmbeddedId
-    private PetId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PET_SEQ")
+    @SequenceGenerator(name = "PET_SEQ", sequenceName = "PET_SEQ", allocationSize = 1)
+    @Column(name = "PET_ID")
+    private Long id;
 
-    @MapsId("USER_ID")
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USERS_ID")
     private User user;
 
     @Column(name = "PET_NAME", nullable = false, insertable = false, updatable = false)
@@ -48,4 +57,27 @@ public class Pet {
         this.introduction = introduction;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public String getPetName() {
+        return petName;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
 }

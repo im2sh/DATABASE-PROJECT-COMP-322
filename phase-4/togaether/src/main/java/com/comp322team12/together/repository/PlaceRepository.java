@@ -13,4 +13,5 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     @Query("SELECT P FROM Place P WHERE P.city LIKE %:city%")
     List<Place> findByCityContaining(@Param("city") String city);
 
+    List<Place> findByPlaceNameContaining(String placeName);
 }

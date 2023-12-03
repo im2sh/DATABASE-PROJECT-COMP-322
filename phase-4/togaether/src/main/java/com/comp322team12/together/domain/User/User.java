@@ -88,4 +88,8 @@ public class User {
     public void addDiary(Diary diary) {
         this.diaries.add(diary);
     }
+
+    public List<Pet> getPetList() {
+        return petList;
+    }
 }
