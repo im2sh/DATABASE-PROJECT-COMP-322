@@ -5,6 +5,7 @@ import com.comp322team12.together.domain.User.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -22,11 +23,11 @@ public class Bookmark {
     @Column(name = "STATUS", nullable = false)
     private Integer status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERS_ID", insertable = false, updatable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PLACE_ID", insertable = false, updatable = false)
     private Place place;
 
