@@ -78,6 +78,7 @@ const StoreName = styled.h2`
   font-size: 1.25rem;
   color: #ce7149;
   font-family: "Pretendard-SemiBold";
+  max-width: 300px;
 `;
 
 const ReservationButton = styled.button`
@@ -87,6 +88,7 @@ const ReservationButton = styled.button`
   border-radius: 20px;
   color: white;
   cursor: pointer;
+  width: 60px;
 `;
 
 const Address = styled.p`

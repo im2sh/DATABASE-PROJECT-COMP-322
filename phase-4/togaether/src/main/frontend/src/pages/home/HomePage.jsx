@@ -50,7 +50,7 @@ const HomePage = () => {
   // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
   const [storeData, setStoreData] = useState({});
   const [storeDataByCategory, setStoreDataByCategory] = useState({});
-  const [activeCategory, setActiveCategory] = useState("dining");
+  const [activeCategory, setActiveCategory] = useState("식당");
 
   useEffect(() => {
     axios
@@ -103,17 +103,27 @@ const HomePage = () => {
     ITEMS_PER_PAGE
   );
 
+  const translateCategory = (category) => {
+    const categoryMap = {
+      dining: "식당",
+      bar: "바",
+      cafe: "카페",
+    };
+    return categoryMap[category.toLowerCase()] || category; // Return the Korean translation or the original category if not found
+  };
+
   const processStoreDataByCategory = (data) => {
     const categoryData = data.reduce((acc, item) => {
       const category = item.category.toLowerCase();
-      if (!acc[category]) {
-        acc[category] = [];
+      const translatedCategory = translateCategory(category);
+      if (!acc[translatedCategory]) {
+        acc[translatedCategory] = [];
       }
-      acc[category].push({
+      acc[translatedCategory].push({
         id: item.id, // 또는 고유 ID 생성
         name: item.placeName,
         placeId: item.placeId,
-        category: item.category.toLowerCase(),
+        category: translatedCategory, // Use the translated category for display
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
         longitude: item.longitude,
@@ -238,7 +248,7 @@ const HomePage = () => {
                   active={activeCategory === category}
                   onClick={() => setActiveCategory(category)}
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category}
                 </CategoryButton>
               ))}
             </CategoryButtons>
