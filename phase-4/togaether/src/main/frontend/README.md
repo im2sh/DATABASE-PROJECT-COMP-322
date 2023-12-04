@@ -59,4 +59,4 @@ npm run start
 - [react-scripts](https://github.com/facebook/create-react-app) v5.0.1
 - [styled-components](https://styled-components.com/) v6.1.1
 - [web-vitals](https://web.dev/vitals/) v2.1.4
-- [zustand] v.4.4.7
+- [zustand](https://github.com/pmndrs/zustand) v.4.4.7
