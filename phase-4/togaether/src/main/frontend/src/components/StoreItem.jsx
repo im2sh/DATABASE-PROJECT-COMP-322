@@ -3,6 +3,8 @@ import categoryBar from "../image/category_bar.png";
 import categoryCafe from "../image/category_cafe.png";
 import categoryDining from "../image/category_dining.png";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
+import axios from "axios";
+import { uesNavigate, useNavigate } from "react-router-dom";
 
 const getCategoryIcon = (category) => {
   const icons = {
@@ -16,12 +18,18 @@ const getCategoryIcon = (category) => {
 const StoreItem = ({
   id,
   category,
+  placeId,
   name,
   address,
   onBookmarkToggle,
   isBookmarked,
 }) => {
-  console.log(`아이템 ID: ${id}, 북마크 상태: ${isBookmarked}`);
+  // console.log(`아이템 ID: ${id}, 북마크 상태: ${isBookmarked}`);
+  const navigate = useNavigate();
+
+  const viewDiaries = () => {
+    navigate(`/diary/${placeId}`);
+  };
 
   return (
     <Item>
@@ -42,7 +50,7 @@ const StoreItem = ({
               <FaRegBookmark size={15} />
             )}
           </BookmarkButton>
-          <ViewDiaryLink>작성한 일기보기</ViewDiaryLink>
+          <ViewDiaryLink onClick={viewDiaries}>작성한 일기보기</ViewDiaryLink>
         </Actions>
       </StoreDetails>
     </Item>
@@ -78,6 +86,7 @@ const StoreName = styled.h2`
   font-size: 1.25rem;
   color: #ce7149;
   font-family: "Pretendard-SemiBold";
+  max-width: 300px;
 `;
 
 const ReservationButton = styled.button`
@@ -87,6 +96,7 @@ const ReservationButton = styled.button`
   border-radius: 20px;
   color: white;
   cursor: pointer;
+  width: 60px;
 `;
 
 const Address = styled.p`
@@ -111,10 +121,13 @@ const BookmarkButton = styled.button`
   padding: 5px 0;
 `;
 
-const ViewDiaryLink = styled.a`
+const ViewDiaryLink = styled.button`
   color: #ff6b6b;
   cursor: pointer;
   text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
 `;
 
 export default StoreItem;

@@ -26,6 +26,7 @@ const BacksButton = styled.button`
   padding: 0;
   align-self: flex-start;
   margin-top: 10px;
+  z-index: 10;
 `;
 
 const BackIcon = styled(MdKeyboardArrowLeft)`

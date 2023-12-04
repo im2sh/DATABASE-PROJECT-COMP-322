@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import DiaryEntry from "../../components/DiaryEntry";
 import BackButton from "../../components/BackButton";
 import logoImage from "../../image/logo.png";
+import BottomBar from "../../components/BottomBar";
 
 const DiaryFeedPage = () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
+  const { placeId } = useParams();
 
   useEffect(() => {
     const fetchDiaryEntries = async () => {
@@ -16,8 +19,14 @@ const DiaryFeedPage = () => {
         return;
       }
 
+      let url = `/api/diary/user/${userId}`;
+      if (placeId) {
+        // placeId를 받으면, 장소에 맞는 일기로 URL 변경
+        url = `/api/diary/place/${placeId}`;
+      }
+
       try {
-        const response = await axios.get(`/api/diary/user/${userId}`);
+        const response = await axios.get(url);
         setDiaryEntries(response.data);
       } catch (error) {
         console.error("Error fetching diary entries:", error);
@@ -25,18 +34,25 @@ const DiaryFeedPage = () => {
     };
 
     fetchDiaryEntries();
-  }, []);
+  }, [placeId]);
+
+  const hasEntries = diaryEntries.length > 0;
 
   return (
-    <PageContainer>
-      <BackButton />
-      <Header>
-        <Logo src={logoImage} alt="투개더 로고" />
-      </Header>
-      {diaryEntries.map((entry) => (
-        <DiaryEntry key={entry.id} {...entry} />
-      ))}
-    </PageContainer>
+    <>
+      <PageContainer>
+        <BackButton />
+        <Header>
+          <Logo src={logoImage} alt="투개더 로고" />
+        </Header>
+        {hasEntries ? (
+          diaryEntries.map((entry) => <DiaryEntry key={entry.id} {...entry} />)
+        ) : (
+          <NoEntriesMessage>불러올 일기가 없습니다.</NoEntriesMessage>
+        )}
+      </PageContainer>
+      <BottomBar />
+    </>
   );
 };
 
@@ -58,6 +74,12 @@ const Logo = styled.img`
   position: relative;
   top: 0;
   width: 140px;
+`;
+
+const NoEntriesMessage = styled.p`
+  text-align: center;
+  color: #666;
+  margin-top: 20px; // Adjust the margin as needed
 `;
 
 export default DiaryFeedPage;

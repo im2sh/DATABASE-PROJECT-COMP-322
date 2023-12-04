@@ -6,6 +6,7 @@ import logoImage from "../../image/logo.png";
 import StoreItem from "../../components/StoreItem";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/usePagination";
+import BottomBar from "../../components/BottomBar";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -50,7 +51,7 @@ const HomePage = () => {
   // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
   const [storeData, setStoreData] = useState({});
   const [storeDataByCategory, setStoreDataByCategory] = useState({});
-  const [activeCategory, setActiveCategory] = useState("dining");
+  const [activeCategory, setActiveCategory] = useState("식당");
 
   useEffect(() => {
     axios
@@ -103,14 +104,26 @@ const HomePage = () => {
     ITEMS_PER_PAGE
   );
 
+  const translateCategory = (category) => {
+    const categoryMap = {
+      dining: "식당",
+      bar: "바",
+      cafe: "카페",
+    };
+    return categoryMap[category.toLowerCase()] || category;
+  };
+
   const processStoreDataByCategory = (data) => {
-    const categoryData = data.reduce((acc, item) => {
-      const category = item.category.toLowerCase();
-      if (!acc[category]) {
-        acc[category] = [];
+    const storeDataByCategory = {};
+
+    data.forEach((item, index) => {
+      const category = translateCategory(item.category.toLowerCase());
+      if (!storeDataByCategory[category]) {
+        storeDataByCategory[category] = [];
       }
-      acc[category].push({
-        id: item.id, // 또는 고유 ID 생성
+      const itemId = `generated-id-${index}`; // ID 생성
+      storeDataByCategory[category].push({
+        id: itemId,
         name: item.placeName,
         placeId: item.placeId,
         category: item.category.toLowerCase(),
@@ -118,10 +131,9 @@ const HomePage = () => {
         latitude: item.latitude,
         longitude: item.longitude,
       });
+    });
 
-      return acc;
-    }, {});
-    return categoryData;
+    return storeDataByCategory;
   };
 
   const {
@@ -167,126 +179,129 @@ const HomePage = () => {
   }, [activeTab]);
 
   return (
-    <PageContainer>
-      <BackButton />
-      <Header>
-        <Logo src={logoImage} alt="투개더 로고" />
-      </Header>
-      <TabContainer>
-        {tabTitles.map((tab) => (
-          <Tab
-            key={tab}
-            active={activeTab === tab}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </Tab>
-        ))}
-        <ActiveTabIndicator activeIndex={activeIndex} />
-      </TabContainer>
-      <ContentContainer>
-        {activeTab === "지역별" && (
-          <>
-            {/* 지역별 버튼들 */}
-            <LocationButtons>
-              {Object.keys(storeData).map((location) => (
-                <LocationButton
-                  key={location}
-                  active={activeLocation === location}
-                  onClick={() => setActiveLocation(location)}
-                >
-                  {location}
-                </LocationButton>
-              ))}
-            </LocationButtons>
+    <>
+      <PageContainer>
+        <BackButton />
+        <Header>
+          <Logo src={logoImage} alt="투개더 로고" />
+        </Header>
+        <TabContainer>
+          {tabTitles.map((tab) => (
+            <Tab
+              key={tab}
+              active={activeTab === tab}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </Tab>
+          ))}
+          <ActiveTabIndicator activeIndex={activeIndex} />
+        </TabContainer>
+        <ContentContainer>
+          {activeTab === "지역별" && (
+            <>
+              {/* 지역별 버튼들 */}
+              <LocationButtons>
+                {Object.keys(storeData).map((location) => (
+                  <LocationButton
+                    key={location}
+                    active={activeLocation === location}
+                    onClick={() => setActiveLocation(location)}
+                  >
+                    {location}
+                  </LocationButton>
+                ))}
+              </LocationButtons>
 
-            {activeLocation && (
-              <>
-                {/* 지역별 리스트 */}
-                <StoreList>
-                  {paginatedData.map((item, index) => (
-                    <StoreItem
-                      key={index}
-                      id={item.id} // id 값 고유
-                      placeId={item.placeId}
-                      {...item}
-                      onBookmarkToggle={() =>
-                        handleBookmarkToggle(item.id, item.placeId)
-                      }
-                      isBookmarked={bookmarks.has(item.id)}
-                    />
-                  ))}
-                </StoreList>
+              {activeLocation && (
+                <>
+                  {/* 지역별 리스트 */}
+                  <StoreList>
+                    {paginatedData.map((item, index) => (
+                      <StoreItem
+                        key={index}
+                        id={item.id} // id 값 고유
+                        placeId={item.placeId}
+                        {...item}
+                        onBookmarkToggle={() =>
+                          handleBookmarkToggle(item.id, item.placeId)
+                        }
+                        isBookmarked={bookmarks.has(item.id)}
+                      />
+                    ))}
+                  </StoreList>
 
-                {/* 페이징 컴포넌트 */}
-                <Pagination
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  changePage={changePage}
-                />
-              </>
-            )}
-          </>
-        )}
-        {activeTab === "분류별" && (
-          <>
-            {/* 분류별 버튼들 */}
-            <CategoryButtons>
-              {Object.keys(storeDataByCategory).map((category) => (
-                <CategoryButton
-                  key={category}
-                  active={activeCategory === category}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </CategoryButton>
-              ))}
-            </CategoryButtons>
+                  {/* 페이징 컴포넌트 */}
+                  <Pagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    changePage={changePage}
+                  />
+                </>
+              )}
+            </>
+          )}
+          {activeTab === "분류별" && (
+            <>
+              {/* 분류별 버튼들 */}
+              <CategoryButtons>
+                {Object.keys(storeDataByCategory).map((category) => (
+                  <CategoryButton
+                    key={category}
+                    active={activeCategory === category}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category}
+                  </CategoryButton>
+                ))}
+              </CategoryButtons>
 
-            {/* 분류별 리스트 */}
-            <StoreList>
-              {paginatedCategoryData.map((item, index) => (
-                <StoreItem
-                  key={index}
-                  id={item.id}
-                  placeId={item.placeId}
-                  {...item}
-                  onBookmarkToggle={() =>
-                    handleBookmarkToggle(item.id, item.placeId)
-                  }
-                  isBookmarked={bookmarks.has(item.id)}
-                />
-              ))}
-            </StoreList>
+              {/* 분류별 리스트 */}
+              <StoreList>
+                {paginatedCategoryData.map((item, index) => (
+                  <StoreItem
+                    key={index}
+                    id={item.id}
+                    placeId={item.placeId}
+                    {...item}
+                    onBookmarkToggle={() =>
+                      handleBookmarkToggle(item.id, item.placeId)
+                    }
+                    isBookmarked={bookmarks.has(item.id)}
+                  />
+                ))}
+              </StoreList>
 
-            {/* 페이징 컴포넌트 */}
-            <Pagination
-              totalPages={totalCategoryPages}
-              currentPage={currentCategoryPage}
-              changePage={changeCategoryPage}
-            />
-          </>
-        )}
-        {activeTab === "즐겨찾기" && (
-          <div>
-            <StoreList>
-              {bookmarkedPlaces.map((place, index) => (
-                <StoreItem
-                  key={index}
-                  id={place.id}
-                  placeId={place.placeId}
-                  {...place}
-                  onBookmarkToggle={() =>
-                    handleBookmarkToggle(place.id, place.placeId)
-                  }
-                  isBookmarked={bookmarks.has(place.id)}
-                />
-              ))}
-            </StoreList>
-          </div>
-        )}
-      </ContentContainer>
-    </PageContainer>
+              {/* 페이징 컴포넌트 */}
+              <Pagination
+                totalPages={totalCategoryPages}
+                currentPage={currentCategoryPage}
+                changePage={changeCategoryPage}
+              />
+            </>
+          )}
+          {activeTab === "즐겨찾기" && (
+            <div>
+              <StoreList>
+                {bookmarkedPlaces.map((place, index) => (
+                  <StoreItem
+                    key={index}
+                    id={place.id}
+                    placeId={place.placeId}
+                    {...place}
+                    onBookmarkToggle={() =>
+                      handleBookmarkToggle(place.id, place.placeId)
+                    }
+                    isBookmarked={bookmarks.has(place.id)}
+                  />
+                ))}
+              </StoreList>
+            </div>
+          )}
+        </ContentContainer>
+      </PageContainer>
+      <BottomBar />
+    </>
   );
 };
 
@@ -294,6 +309,11 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
+  overflow: auto;
+  height: calc(100vh - 60px);
+  position: relative;
 `;
 
 const Header = styled.div`
