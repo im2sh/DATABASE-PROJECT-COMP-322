@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -100,6 +101,7 @@ public class PlaceService {
         return placeResponses;
     }
 
+
     @Transactional
     public void choiceBookmark(BookMarkRequest bookMarkRequest) {
         User user = userRepository.findById(bookMarkRequest.userId())
@@ -129,5 +131,11 @@ public class PlaceService {
             placeResponses.add(place.toResponse());
         }
         return placeResponses;
+    }
+
+    public Place findPlaceById(Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new InvalidPlaceException("존재하지 않는 장소입니다."));
+        return place;
     }
 }

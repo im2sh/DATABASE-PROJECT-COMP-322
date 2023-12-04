@@ -25,6 +25,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
 	implementation group: 'com.oracle.database.jdbc', name: 'ojdbc11', version: '23.2.0.0'
+    testImplementation 'junit:junit:4.13.2'
 
     annotationProcessor group: 'org.projectlombok', name : 'lombok', version: '1.18.28'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'

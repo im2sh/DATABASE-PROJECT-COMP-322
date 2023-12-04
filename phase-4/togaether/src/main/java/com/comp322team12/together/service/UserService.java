@@ -15,24 +15,28 @@ import com.comp322team12.together.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
 
     private final PetRepository petRepository;
 
     @Transactional
-    public void signup(UserSignupRequest userSignupRequest) {
-        if (userRepository.findByEmail(userSignupRequest.email()).isPresent()) {
+    public Long signup(UserSignupRequest userSignupRequest) {
+        if (userRepository.findByEmailWithOptimisticLock(userSignupRequest.email()).isPresent()) {
             throw new DuplicateEmailException("이미 가입된 이메일입니다.");
         }
+
         User user = userSignupRequest.toEntity();
         userRepository.save(user);
+        return user.getId();
     }
 
     public User authenticate(String email, String password) {
@@ -66,5 +70,10 @@ public class UserService {
             petInfoList.add(new PetResponse(pet.getPetName(), pet.getSpecies(), pet.getGender(), pet.getAge(), pet.getIntroduction()));
         }
         return petInfoList;
+    }
+
+    public User findByUserId(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidUserException("존재하지 않는 유저입니다."));
+        return user;
     }
 }
