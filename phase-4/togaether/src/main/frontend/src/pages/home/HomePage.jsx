@@ -109,29 +109,30 @@ const HomePage = () => {
       bar: "바",
       cafe: "카페",
     };
-    return categoryMap[category.toLowerCase()] || category; // Return the Korean translation or the original category if not found
+    return categoryMap[category.toLowerCase()] || category;
   };
 
   const processStoreDataByCategory = (data) => {
-    const categoryData = data.reduce((acc, item) => {
-      const category = item.category.toLowerCase();
-      const translatedCategory = translateCategory(category);
-      if (!acc[translatedCategory]) {
-        acc[translatedCategory] = [];
+    const storeDataByCategory = {};
+
+    data.forEach((item, index) => {
+      const category = translateCategory(item.category.toLowerCase());
+      if (!storeDataByCategory[category]) {
+        storeDataByCategory[category] = [];
       }
-      acc[translatedCategory].push({
-        id: item.id, // 또는 고유 ID 생성
+      const itemId = `generated-id-${index}`; // ID 생성
+      storeDataByCategory[category].push({
+        id: itemId,
         name: item.placeName,
         placeId: item.placeId,
-        category: category,
+        category: item.category.toLowerCase(),
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
         longitude: item.longitude,
       });
+    });
 
-      return acc;
-    }, {});
-    return categoryData;
+    return storeDataByCategory;
   };
 
   const {
