@@ -4,6 +4,7 @@ import styled from "styled-components";
 import DiaryEntry from "../../components/DiaryEntry";
 import BackButton from "../../components/BackButton";
 import logoImage from "../../image/logo.png";
+import BottomBar from "../../components/BottomBar";
 
 const DiaryFeedPage = () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
@@ -28,15 +29,18 @@ const DiaryFeedPage = () => {
   }, []);
 
   return (
-    <PageContainer>
-      <BackButton />
-      <Header>
-        <Logo src={logoImage} alt="투개더 로고" />
-      </Header>
-      {diaryEntries.map((entry) => (
-        <DiaryEntry key={entry.id} {...entry} />
-      ))}
-    </PageContainer>
+    <>
+      <PageContainer>
+        <BackButton />
+        <Header>
+          <Logo src={logoImage} alt="투개더 로고" />
+        </Header>
+        {diaryEntries.map((entry) => (
+          <DiaryEntry key={entry.id} {...entry} />
+        ))}
+      </PageContainer>
+      <BottomBar />
+    </>
   );
 };
 
