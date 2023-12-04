@@ -123,7 +123,7 @@ const HomePage = () => {
         id: item.id, // 또는 고유 ID 생성
         name: item.placeName,
         placeId: item.placeId,
-        category: translatedCategory, // Use the translated category for display
+        category: category,
         address: `${item.city} ${item.detailAddress}`,
         latitude: item.latitude,
         longitude: item.longitude,
