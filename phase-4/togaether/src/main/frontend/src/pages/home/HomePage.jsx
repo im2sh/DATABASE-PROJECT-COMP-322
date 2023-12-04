@@ -6,6 +6,7 @@ import logoImage from "../../image/logo.png";
 import StoreItem from "../../components/StoreItem";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/usePagination";
+import BottomBar from "../../components/BottomBar";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -178,126 +179,129 @@ const HomePage = () => {
   }, [activeTab]);
 
   return (
-    <PageContainer>
-      <BackButton />
-      <Header>
-        <Logo src={logoImage} alt="투개더 로고" />
-      </Header>
-      <TabContainer>
-        {tabTitles.map((tab) => (
-          <Tab
-            key={tab}
-            active={activeTab === tab}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </Tab>
-        ))}
-        <ActiveTabIndicator activeIndex={activeIndex} />
-      </TabContainer>
-      <ContentContainer>
-        {activeTab === "지역별" && (
-          <>
-            {/* 지역별 버튼들 */}
-            <LocationButtons>
-              {Object.keys(storeData).map((location) => (
-                <LocationButton
-                  key={location}
-                  active={activeLocation === location}
-                  onClick={() => setActiveLocation(location)}
-                >
-                  {location}
-                </LocationButton>
-              ))}
-            </LocationButtons>
+    <>
+      <PageContainer>
+        <BackButton />
+        <Header>
+          <Logo src={logoImage} alt="투개더 로고" />
+        </Header>
+        <TabContainer>
+          {tabTitles.map((tab) => (
+            <Tab
+              key={tab}
+              active={activeTab === tab}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </Tab>
+          ))}
+          <ActiveTabIndicator activeIndex={activeIndex} />
+        </TabContainer>
+        <ContentContainer>
+          {activeTab === "지역별" && (
+            <>
+              {/* 지역별 버튼들 */}
+              <LocationButtons>
+                {Object.keys(storeData).map((location) => (
+                  <LocationButton
+                    key={location}
+                    active={activeLocation === location}
+                    onClick={() => setActiveLocation(location)}
+                  >
+                    {location}
+                  </LocationButton>
+                ))}
+              </LocationButtons>
 
-            {activeLocation && (
-              <>
-                {/* 지역별 리스트 */}
-                <StoreList>
-                  {paginatedData.map((item, index) => (
-                    <StoreItem
-                      key={index}
-                      id={item.id} // id 값 고유
-                      placeId={item.placeId}
-                      {...item}
-                      onBookmarkToggle={() =>
-                        handleBookmarkToggle(item.id, item.placeId)
-                      }
-                      isBookmarked={bookmarks.has(item.id)}
-                    />
-                  ))}
-                </StoreList>
+              {activeLocation && (
+                <>
+                  {/* 지역별 리스트 */}
+                  <StoreList>
+                    {paginatedData.map((item, index) => (
+                      <StoreItem
+                        key={index}
+                        id={item.id} // id 값 고유
+                        placeId={item.placeId}
+                        {...item}
+                        onBookmarkToggle={() =>
+                          handleBookmarkToggle(item.id, item.placeId)
+                        }
+                        isBookmarked={bookmarks.has(item.id)}
+                      />
+                    ))}
+                  </StoreList>
 
-                {/* 페이징 컴포넌트 */}
-                <Pagination
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  changePage={changePage}
-                />
-              </>
-            )}
-          </>
-        )}
-        {activeTab === "분류별" && (
-          <>
-            {/* 분류별 버튼들 */}
-            <CategoryButtons>
-              {Object.keys(storeDataByCategory).map((category) => (
-                <CategoryButton
-                  key={category}
-                  active={activeCategory === category}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </CategoryButton>
-              ))}
-            </CategoryButtons>
+                  {/* 페이징 컴포넌트 */}
+                  <Pagination
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    changePage={changePage}
+                  />
+                </>
+              )}
+            </>
+          )}
+          {activeTab === "분류별" && (
+            <>
+              {/* 분류별 버튼들 */}
+              <CategoryButtons>
+                {Object.keys(storeDataByCategory).map((category) => (
+                  <CategoryButton
+                    key={category}
+                    active={activeCategory === category}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category}
+                  </CategoryButton>
+                ))}
+              </CategoryButtons>
 
-            {/* 분류별 리스트 */}
-            <StoreList>
-              {paginatedCategoryData.map((item, index) => (
-                <StoreItem
-                  key={index}
-                  id={item.id}
-                  placeId={item.placeId}
-                  {...item}
-                  onBookmarkToggle={() =>
-                    handleBookmarkToggle(item.id, item.placeId)
-                  }
-                  isBookmarked={bookmarks.has(item.id)}
-                />
-              ))}
-            </StoreList>
+              {/* 분류별 리스트 */}
+              <StoreList>
+                {paginatedCategoryData.map((item, index) => (
+                  <StoreItem
+                    key={index}
+                    id={item.id}
+                    placeId={item.placeId}
+                    {...item}
+                    onBookmarkToggle={() =>
+                      handleBookmarkToggle(item.id, item.placeId)
+                    }
+                    isBookmarked={bookmarks.has(item.id)}
+                  />
+                ))}
+              </StoreList>
 
-            {/* 페이징 컴포넌트 */}
-            <Pagination
-              totalPages={totalCategoryPages}
-              currentPage={currentCategoryPage}
-              changePage={changeCategoryPage}
-            />
-          </>
-        )}
-        {activeTab === "즐겨찾기" && (
-          <div>
-            <StoreList>
-              {bookmarkedPlaces.map((place, index) => (
-                <StoreItem
-                  key={index}
-                  id={place.id}
-                  placeId={place.placeId}
-                  {...place}
-                  onBookmarkToggle={() =>
-                    handleBookmarkToggle(place.id, place.placeId)
-                  }
-                  isBookmarked={bookmarks.has(place.id)}
-                />
-              ))}
-            </StoreList>
-          </div>
-        )}
-      </ContentContainer>
-    </PageContainer>
+              {/* 페이징 컴포넌트 */}
+              <Pagination
+                totalPages={totalCategoryPages}
+                currentPage={currentCategoryPage}
+                changePage={changeCategoryPage}
+              />
+            </>
+          )}
+          {activeTab === "즐겨찾기" && (
+            <div>
+              <StoreList>
+                {bookmarkedPlaces.map((place, index) => (
+                  <StoreItem
+                    key={index}
+                    id={place.id}
+                    placeId={place.placeId}
+                    {...place}
+                    onBookmarkToggle={() =>
+                      handleBookmarkToggle(place.id, place.placeId)
+                    }
+                    isBookmarked={bookmarks.has(place.id)}
+                  />
+                ))}
+              </StoreList>
+            </div>
+          )}
+        </ContentContainer>
+      </PageContainer>
+      <BottomBar />
+    </>
   );
 };
 
@@ -305,6 +309,11 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+  padding-bottom: 60px;
+  box-sizing: border-box;
+  overflow: auto;
+  height: calc(100vh - 60px);
+  position: relative;
 `;
 
 const Header = styled.div`
