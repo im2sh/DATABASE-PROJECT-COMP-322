@@ -50,7 +50,7 @@ const HomePage = () => {
   // api로 place 데이터 가져온 다음 파싱해서 리스트에 넣기
   const [storeData, setStoreData] = useState({});
   const [storeDataByCategory, setStoreDataByCategory] = useState({});
-  const [activeCategory, setActiveCategory] = useState("dining");
+  const [activeCategory, setActiveCategory] = useState("식당");
 
   useEffect(() => {
     axios
@@ -103,14 +103,26 @@ const HomePage = () => {
     ITEMS_PER_PAGE
   );
 
+  const translateCategory = (category) => {
+    const categoryMap = {
+      dining: "식당",
+      bar: "바",
+      cafe: "카페",
+    };
+    return categoryMap[category.toLowerCase()] || category;
+  };
+
   const processStoreDataByCategory = (data) => {
-    const categoryData = data.reduce((acc, item) => {
-      const category = item.category.toLowerCase();
-      if (!acc[category]) {
-        acc[category] = [];
+    const storeDataByCategory = {};
+
+    data.forEach((item, index) => {
+      const category = translateCategory(item.category.toLowerCase());
+      if (!storeDataByCategory[category]) {
+        storeDataByCategory[category] = [];
       }
-      acc[category].push({
-        id: item.id, // 또는 고유 ID 생성
+      const itemId = `generated-id-${index}`; // ID 생성
+      storeDataByCategory[category].push({
+        id: itemId,
         name: item.placeName,
         placeId: item.placeId,
         category: item.category.toLowerCase(),
@@ -118,10 +130,9 @@ const HomePage = () => {
         latitude: item.latitude,
         longitude: item.longitude,
       });
+    });
 
-      return acc;
-    }, {});
-    return categoryData;
+    return storeDataByCategory;
   };
 
   const {
@@ -238,7 +249,7 @@ const HomePage = () => {
                   active={activeCategory === category}
                   onClick={() => setActiveCategory(category)}
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category}
                 </CategoryButton>
               ))}
             </CategoryButtons>
