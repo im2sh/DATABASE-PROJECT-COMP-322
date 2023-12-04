@@ -5,6 +5,7 @@ import LoginPage from "./pages/login/LoginPage";
 import SignupPage from "./pages/signup/SignupPage";
 import ChangePasswordPage from "./pages/changePassword/ChangePasswordPage";
 import WriteDiaryPage from "./pages/writediary/WriteDiaryPage";
+import AddDiaryLocationPage from "./pages/addDiaryLocation/AddDiaryLocationPage";
 import DiaryFeedPage from "./pages/diaryFeed/DiaryFeedPage";
 import SearchPage from "./pages/search/SearchPage";
 
@@ -22,6 +23,7 @@ const App = () => {
             element={<ChangePasswordPage />}
           ></Route>
           <Route path="/writeDiary" element={<WriteDiaryPage />} />
+          <Route path="/addDiaryLocation" element={<AddDiaryLocationPage />} />
           <Route path="/diary" element={<DiaryFeedPage />} />
           <Route path="/search" element={<SearchPage />} />
         </Routes>
