@@ -2,18 +2,23 @@
 
 ## 개발 환경
 
-**OS**
+**[OS]**</br>
 MAC
 Sonoma 14.0
 
-**Language**
+**[Language]**</br>
 Java
 17.0.6
 
-**Framework**
-Spring Boot : 3.1.5
+**[Framework]**</br>
+Spring Boot : 3.1.5</br>
+Spring-Data-JPA</br>
+Spring-Web</br>
+Swagger : 3.0.0</br>
+Lombok : 1.18.28</br>
+Ojdbc : 11 version : 23.2.0.0</br>
 
-**IDE**</br>
+**[IDE]**</br>
 IntelliJ IDEA 2023.2.5 (Ultimate Edition)</br>
 Build #IU-232.10227.8, built on November 9, 2023</br>
 Runtime version: 17.0.9+7-b1000.46 aarch64</br>
@@ -62,7 +67,8 @@ Settings > Gradle > Gradle JVM: 17 Oracle OpenJDK version 17.0.6
       - 기능 확장을 고려하여 Sequence한 Key값을 가지고 있어야 한다고 판단
       - 기존에 User_ID와 petName의 조합하여 복합키로 가지고 있었으나, Pet_ID을 생성하여 PK를 부여
 </br></br>
-2. Team12_Phase4_Insert.sql 파일 수정
+### DML 변경
+1. Team12_Phase4_Insert.sql 파일 수정
    - DDL의 변경으로 인해, Insert 또한 파일 수정이 발생 
    - 자바에 있는 LocalDateTime 객체를 이용하여 생성 날짜를 생성하고 저장하는 과정에서 Oracle DB와 호환이 되지 않아, Data Field에 TO_DATE 추가
      - e.g. TO_DATE('2021-10-01', 'YYYY-MM-DD')
