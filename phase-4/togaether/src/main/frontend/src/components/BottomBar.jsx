@@ -9,7 +9,10 @@ const BottomBar = () => {
   const isActive = (path) => location.pathname === path;
   return (
     <NavBar>
-      <NavItem onClick={() => navigate("/home")} active={isActive("/home")}>
+      <NavItem
+        onClick={() => navigate("/addDiaryLocation")}
+        active={isActive("/addDiaryLocation")}
+      >
         <FaSearch />
         <span>검색</span>
       </NavItem>
