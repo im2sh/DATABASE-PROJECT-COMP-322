@@ -66,6 +66,10 @@ Settings > Gradle > Gradle JVM: 17 Oracle OpenJDK version 17.0.6
    - Pet PK를 부여
       - 기능 확장을 고려하여 Sequence한 Key값을 가지고 있어야 한다고 판단
       - 기존에 User_ID와 petName의 조합하여 복합키로 가지고 있었으나, Pet_ID을 생성하여 PK를 부여
+   </br></br>
+   - 새로운 데이터 삽입을 위해 1씩 증가하는 무결성 제약 조건을 가지는 Sequence 생성
+      - Diary_ID, Pet_ID, User_ID
+   
 </br></br>
 ### DML 변경
 1. Team12_Phase4_Insert.sql 파일 수정
