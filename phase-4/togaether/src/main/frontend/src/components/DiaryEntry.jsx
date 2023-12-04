@@ -44,8 +44,15 @@ const DiaryEntry = ({ content, createdDate, place, user, emotion }) => {
     const lastChar = word.charCodeAt(word.length - 1);
     return (lastChar - 0xac00) % 28 > 0;
   };
-  const lastPetName = user ? user.petList[user.petList.length - 1].petName : "";
-  const conjunction = hasJongseong(lastPetName) ? "과 함께" : "와 함께";
+  const lastPetName =
+    user && user.petList.length > 0
+      ? user.petList[user.petList.length - 1].petName
+      : "";
+  const conjunction = lastPetName
+    ? hasJongseong(lastPetName)
+      ? "과 함께"
+      : "와 함께"
+    : "";
 
   return (
     <DiaryEntryContainer>
