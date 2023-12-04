@@ -2,16 +2,21 @@
 
 ## 개발 환경
 
-**OS**
+**[OS]**</br>
 MAC
 Sonoma 14.0
 
-**Language**
+**[Language]**</br>
 Java
 17.0.6
 
-**Framework**
-Spring Boot : 3.1.5
+**[Framework]**</br>
+Spring Boot : 3.1.5</br>
+Spring-Data-JPA</br>
+Spring-Web</br>
+Swagger : 3.0.0</br>
+Lombok : 1.18.28</br>
+Ojdbc : 11 version : 23.2.0.0</br>
 
 **IDE**</br>
 IntelliJ IDEA 2023.2.5 (Ultimate Edition)</br>
