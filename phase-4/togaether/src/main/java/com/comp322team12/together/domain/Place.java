@@ -67,8 +67,7 @@ public class Place {
     }
 
     public PlaceResponse toResponse() {
-        return new PlaceResponse(id, placeName, category.getType(), city, detailAddress, latitude, longitude,
-                getReviewCount(), getBookmarkCount(), getAverageRating());
+        return new PlaceResponse(id, placeName, category.getType(), city, detailAddress, latitude, longitude);
     }
 
     public double getAverageRating() {
