@@ -14,6 +14,7 @@ import com.comp322team12.together.repository.PetRepository;
 import com.comp322team12.together.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
