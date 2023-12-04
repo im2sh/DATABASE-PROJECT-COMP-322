@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DiaryEntry from "../../components/DiaryEntry";
 import BackButton from "../../components/BackButton";
 import logoImage from "../../image/logo.png";
 import BottomBar from "../../components/BottomBar";
+import axios from "axios";
 
 const DiaryFeedPage = () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
   const { placeId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDiaryEntries = async () => {
@@ -42,6 +43,10 @@ const DiaryFeedPage = () => {
     <>
       <PageContainer>
         <BackButton />
+        <WriteDiaryButton onClick={() => navigate("/writeDiary")}>
+          일기 작성하기
+        </WriteDiaryButton>{" "}
+        {/* Add this line */}
         <Header>
           <Logo src={logoImage} alt="투개더 로고" />
         </Header>
@@ -74,6 +79,17 @@ const Logo = styled.img`
   position: relative;
   top: 0;
   width: 140px;
+`;
+
+const WriteDiaryButton = styled.button`
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  align-self: center; // Center the button
 `;
 
 const NoEntriesMessage = styled.p`

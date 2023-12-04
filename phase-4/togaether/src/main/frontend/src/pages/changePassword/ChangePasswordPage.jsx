@@ -26,7 +26,7 @@ const ChangePasswordPage = () => {
 
     try {
       await axios.post(`/api/user/modifyPw`, {
-        email,
+        userEmail: email,
         currentPassword,
         newPassword,
       });
