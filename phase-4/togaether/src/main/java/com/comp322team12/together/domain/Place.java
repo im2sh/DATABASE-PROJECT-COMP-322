@@ -54,6 +54,7 @@ public class Place {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Bookmark> bookmarks = new ArrayList<>();
 
+
     @Builder
     public Place(String placeName, Category category, String city, String detailAddress, double latitude,
                  double longitude) {
@@ -66,7 +67,8 @@ public class Place {
     }
 
     public PlaceResponse toResponse() {
-        return new PlaceResponse(id, placeName, category.getType(), city, detailAddress, latitude, longitude);
+        return new PlaceResponse(id, placeName, category.getType(), city, detailAddress, latitude, longitude,
+                getReviewCount(), getBookmarkCount(), getAverageRating());
     }
 
     public double getAverageRating() {
@@ -114,5 +116,19 @@ public class Place {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public int getReviewCount() {
+        return reviewList.size();
+    }
+
+    public int getBookmarkCount() {
+        int size = 0;
+        for (Bookmark bookmark : bookmarks) {
+            if (bookmark.getStatus() == 1) {
+                size++;
+            }
+        }
+        return size;
     }
 }

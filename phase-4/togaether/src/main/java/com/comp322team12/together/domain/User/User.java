@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -37,7 +38,7 @@ public class User {
     @Column(name = "PHONE_NUMBER", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
     @Column(name = "PASSWORD", nullable = false)
@@ -93,4 +94,7 @@ public class User {
         return petList;
     }
 
+    public Long getId() {
+        return id;
+    }
 }
