@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByEmail(String email);
 
-    @Lock(value = LockModeType.OPTIMISTIC)
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("select u from User u where u.email = :email")
     Optional<User> findByEmailWithOptimisticLock(@Param("email") String email);
 }
